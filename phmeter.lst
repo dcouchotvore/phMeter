@@ -1,0 +1,4270 @@
+
+AVRASM ver. 2.1.30  C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\phmeter.asm Thu Aug 06 12:02:44 2009
+
+C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\phmeter.asm(3): Including file 'C:\Program Files\Atmel\AVR Tools\AvrAssembler2\Appnotes\m8535def.inc'
+C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\phmeter.asm(1699): Including file 'C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\jtmath.asm'
+C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\phmeter.asm(1701): Including file 'C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\fontlarge.asm'
+C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\fontlarge.asm(5): Including file 'C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\chardefs.inc'
+C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\phmeter.asm(1703): Including file 'C:\Documents and Settings\dcouchot-vore\My Documents\pHmeter\LCDAGM1264F.asm'
+                 
+                 
+                 
+                 			.INCLUDE "m8535def.inc"
+                 
+                 ;***** Created: 2008-11-07 12:39 ******* Source: ATmega8535.xml **********
+                 ;*************************************************************************
+                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                 ;* 
+                 ;* Number            : AVR000
+                 ;* File Name         : "m8535def.inc"
+                 ;* Title             : Register/Bit Definitions for the ATmega8535
+                 ;* Date              : 2008-11-07
+                 ;* Version           : 2.31
+                 ;* Support E-mail    : avr@atmel.com
+                 ;* Target MCU        : ATmega8535
+                 ;* 
+                 ;* DESCRIPTION
+                 ;* When including this file in the assembly program file, all I/O register 
+                 ;* names and I/O register bit names appearing in the data book can be used.
+                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                 ;* SRAM is also defined 
+                 ;* 
+                 ;* The Register names are represented by their hexadecimal address.
+                 ;* 
+                 ;* The Register Bit names are represented by their bit number (0-7).
+                 ;* 
+                 ;* Please observe the difference in using the bit names with instructions
+                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                 ;* (skip if bit in register set/cleared). The following example illustrates
+                 ;* this:
+                 ;* 
+                 ;* in    r16,PORTB             ;read PORTB latch
+                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                 ;* out   PORTB,r16             ;output to PORTB
+                 ;* 
+                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                 ;* rjmp  TOV0_is_set           ;jump if set
+                 ;* ...                         ;otherwise do something else
+                 ;*************************************************************************
+                 
+                 #ifndef _M8535DEF_INC_
+                 #define _M8535DEF_INC_
+                 
+                 
+                 #pragma partinc 0
+                 
+                 ; ***** SPECIFY DEVICE ***************************************************
+                 .device ATmega8535
+                 #pragma AVRPART ADMIN PART_NAME ATmega8535
+                 .equ	SIGNATURE_000	= 0x1e
+                 .equ	SIGNATURE_001	= 0x93
+                 .equ	SIGNATURE_002	= 0x08
+                 
+                 #pragma AVRPART CORE CORE_VERSION V2E
+                 
+                 
+                 ; ***** I/O REGISTER DEFINITIONS *****************************************
+                 ; NOTE:
+                 ; Definitions marked "MEMORY MAPPED"are extended I/O ports
+                 ; and cannot be used with IN/OUT instructions
+                 .equ	SREG	= 0x3f
+                 .equ	SPL	= 0x3d
+                 .equ	SPH	= 0x3e
+                 .equ	OCR0	= 0x3c
+                 .equ	GICR	= 0x3b
+                 .equ	GIFR	= 0x3a
+                 .equ	TIMSK	= 0x39
+                 .equ	TIFR	= 0x38
+                 .equ	SPMCR	= 0x37
+                 .equ	TWCR	= 0x36
+                 .equ	MCUCR	= 0x35
+                 .equ	MCUCSR	= 0x34
+                 .equ	TCCR0	= 0x33
+                 .equ	TCNT0	= 0x32
+                 .equ	OSCCAL	= 0x31
+                 .equ	SFIOR	= 0x30
+                 .equ	TCCR1A	= 0x2f
+                 .equ	TCCR1B	= 0x2e
+                 .equ	TCNT1L	= 0x2c
+                 .equ	TCNT1H	= 0x2d
+                 .equ	OCR1AL	= 0x2a
+                 .equ	OCR1AH	= 0x2b
+                 .equ	OCR1BL	= 0x28
+                 .equ	OCR1BH	= 0x29
+                 .equ	ICR1L	= 0x26
+                 .equ	ICR1H	= 0x27
+                 .equ	TCCR2	= 0x25
+                 .equ	TCNT2	= 0x24
+                 .equ	OCR2	= 0x23
+                 .equ	ASSR	= 0x22
+                 .equ	WDTCR	= 0x21
+                 .equ	UBRRH	= 0x20
+                 .equ	UCSRC	= 0x20
+                 .equ	EEARL	= 0x1e
+                 .equ	EEARH	= 0x1f
+                 .equ	EEDR	= 0x1d
+                 .equ	EECR	= 0x1c
+                 .equ	PORTA	= 0x1b
+                 .equ	DDRA	= 0x1a
+                 .equ	PINA	= 0x19
+                 .equ	PORTB	= 0x18
+                 .equ	DDRB	= 0x17
+                 .equ	PINB	= 0x16
+                 .equ	PORTC	= 0x15
+                 .equ	DDRC	= 0x14
+                 .equ	PINC	= 0x13
+                 .equ	PORTD	= 0x12
+                 .equ	DDRD	= 0x11
+                 .equ	PIND	= 0x10
+                 .equ	SPDR	= 0x0f
+                 .equ	SPSR	= 0x0e
+                 .equ	SPCR	= 0x0d
+                 .equ	UDR	= 0x0c
+                 .equ	UCSRA	= 0x0b
+                 .equ	UCSRB	= 0x0a
+                 .equ	UBRRL	= 0x09
+                 .equ	ACSR	= 0x08
+                 .equ	ADMUX	= 0x07
+                 .equ	ADCSRA	= 0x06
+                 .equ	ADCH	= 0x05
+                 .equ	ADCL	= 0x04
+                 .equ	TWDR	= 0x03
+                 .equ	TWAR	= 0x02
+                 .equ	TWSR	= 0x01
+                 .equ	TWBR	= 0x00
+                 
+                 
+                 ; ***** BIT DEFINITIONS **************************************************
+                 
+                 ; ***** AD_CONVERTER *****************
+                 ; ADMUX - The ADC multiplexer Selection Register
+                 .equ	MUX0	= 0	; Analog Channel and Gain Selection Bits
+                 .equ	MUX1	= 1	; Analog Channel and Gain Selection Bits
+                 .equ	MUX2	= 2	; Analog Channel and Gain Selection Bits
+                 .equ	MUX3	= 3	; Analog Channel and Gain Selection Bits
+                 .equ	MUX4	= 4	; Analog Channel and Gain Selection Bits
+                 .equ	ADLAR	= 5	; Left Adjust Result
+                 .equ	REFS0	= 6	; Reference Selection Bit 0
+                 .equ	REFS1	= 7	; Reference Selection Bit 1
+                 
+                 ; ADCSRA - The ADC Control and Status register
+                 .equ	ADCSR	= ADCSRA	; For compatibility
+                 .equ	ADPS0	= 0	; ADC  Prescaler Select Bits
+                 .equ	ADPS1	= 1	; ADC  Prescaler Select Bits
+                 .equ	ADPS2	= 2	; ADC  Prescaler Select Bits
+                 .equ	ADIE	= 3	; ADC Interrupt Enable
+                 .equ	ADIF	= 4	; ADC Interrupt Flag
+                 .equ	ADATE	= 5	; When this bit is written to one,the Timer/Counter2 prescaler will be reset.The bit will be cleared by hardware after the operation is performed.Writing a zero to this bit will have no effect.This bit will always be read as zero if Timer/C                 ounter2 is clocked by the internal CPU clock.If this bit is written when Timer/Counter2 is operating in asynchronous mode,the bit will remain one until the prescaler has been reset.
+                 .equ	ADFR	= ADATE	; For compatibility
+                 .equ	ADSC	= 6	; ADC Start Conversion
+                 .equ	ADEN	= 7	; ADC Enable
+                 
+                 ; ADCH - ADC Data Register High Byte
+                 .equ	ADCH0	= 0	; ADC Data Register High Byte Bit 0
+                 .equ	ADCH1	= 1	; ADC Data Register High Byte Bit 1
+                 .equ	ADCH2	= 2	; ADC Data Register High Byte Bit 2
+                 .equ	ADCH3	= 3	; ADC Data Register High Byte Bit 3
+                 .equ	ADCH4	= 4	; ADC Data Register High Byte Bit 4
+                 .equ	ADCH5	= 5	; ADC Data Register High Byte Bit 5
+                 .equ	ADCH6	= 6	; ADC Data Register High Byte Bit 6
+                 .equ	ADCH7	= 7	; ADC Data Register High Byte Bit 7
+                 
+                 ; ADCL - ADC Data Register Low Byte
+                 .equ	ADCL0	= 0	; ADC Data Register Low Byte Bit 0
+                 .equ	ADCL1	= 1	; ADC Data Register Low Byte Bit 1
+                 .equ	ADCL2	= 2	; ADC Data Register Low Byte Bit 2
+                 .equ	ADCL3	= 3	; ADC Data Register Low Byte Bit 3
+                 .equ	ADCL4	= 4	; ADC Data Register Low Byte Bit 4
+                 .equ	ADCL5	= 5	; ADC Data Register Low Byte Bit 5
+                 .equ	ADCL6	= 6	; ADC Data Register Low Byte Bit 6
+                 .equ	ADCL7	= 7	; ADC Data Register Low Byte Bit 7
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	ADTS0	= 5	; ADC Auto Trigger Source 0
+                 .equ	ADTS1	= 6	; ADC Auto Trigger Source 1
+                 .equ	ADTS2	= 7	; ADC Auto Trigger Source 2
+                 
+                 
+                 ; ***** ANALOG_COMPARATOR ************
+                 ; ACSR - Analog Comparator Control And Status Register
+                 .equ	ACIS0	= 0	; Analog Comparator Interrupt Mode Select bit 0
+                 .equ	ACIS1	= 1	; Analog Comparator Interrupt Mode Select bit 1
+                 .equ	ACIC	= 2	; Analog Comparator Input Capture Enable
+                 .equ	ACIE	= 3	; Analog Comparator Interrupt Enable
+                 .equ	ACI	= 4	; Analog Comparator Interrupt Flag
+                 .equ	ACO	= 5	; Analog Compare Output
+                 .equ	ACBG	= 6	; Analog Comparator Bandgap Select
+                 .equ	AINBG	= ACBG	; For compatibility
+                 .equ	ACD	= 7	; Analog Comparator Disable
+                 
+                 
+                 ; ***** TWI **************************
+                 ; TWBR - TWI Bit Rate register
+                 .equ	I2BR	= TWBR	; For compatibility
+                 .equ	TWBR0	= 0	; 
+                 .equ	TWBR1	= 1	; 
+                 .equ	TWBR2	= 2	; 
+                 .equ	TWBR3	= 3	; 
+                 .equ	TWBR4	= 4	; 
+                 .equ	TWBR5	= 5	; 
+                 .equ	TWBR6	= 6	; 
+                 .equ	TWBR7	= 7	; 
+                 
+                 ; TWCR - TWI Control Register
+                 .equ	I2CR	= TWCR	; For compatibility
+                 .equ	TWIE	= 0	; TWI Interrupt Enable
+                 .equ	I2IE	= TWIE	; For compatibility
+                 .equ	TWEN	= 2	; TWI Enable Bit
+                 .equ	I2EN	= TWEN	; For compatibility
+                 .equ	ENI2C	= TWEN	; For compatibility
+                 .equ	TWWC	= 3	; TWI Write Collition Flag
+                 .equ	I2WC	= TWWC	; For compatibility
+                 .equ	TWSTO	= 4	; TWI Stop Condition Bit
+                 .equ	I2STO	= TWSTO	; For compatibility
+                 .equ	TWSTA	= 5	; TWI Start Condition Bit
+                 .equ	I2STA	= TWSTA	; For compatibility
+                 .equ	TWEA	= 6	; TWI Enable Acknowledge Bit
+                 .equ	I2EA	= TWEA	; For compatibility
+                 .equ	TWINT	= 7	; TWI Interrupt Flag
+                 .equ	I2INT	= TWINT	; For compatibility
+                 
+                 ; TWSR - TWI Status Register
+                 .equ	I2SR	= TWSR	; For compatibility
+                 .equ	TWPS0	= 0	; TWI Prescaler
+                 .equ	TWS0	= TWPS0	; For compatibility
+                 .equ	I2GCE	= TWPS0	; For compatibility
+                 .equ	TWPS1	= 1	; TWI Prescaler
+                 .equ	TWS1	= TWPS1	; For compatibility
+                 .equ	TWS3	= 3	; TWI Status
+                 .equ	I2S3	= TWS3	; For compatibility
+                 .equ	TWS4	= 4	; TWI Status
+                 .equ	I2S4	= TWS4	; For compatibility
+                 .equ	TWS5	= 5	; TWI Status
+                 .equ	I2S5	= TWS5	; For compatibility
+                 .equ	TWS6	= 6	; TWI Status
+                 .equ	I2S6	= TWS6	; For compatibility
+                 .equ	TWS7	= 7	; TWI Status
+                 .equ	I2S7	= TWS7	; For compatibility
+                 
+                 ; TWDR - TWI Data register
+                 .equ	I2DR	= TWDR	; For compatibility
+                 .equ	TWD0	= 0	; TWI Data Register Bit 0
+                 .equ	TWD1	= 1	; TWI Data Register Bit 1
+                 .equ	TWD2	= 2	; TWI Data Register Bit 2
+                 .equ	TWD3	= 3	; TWI Data Register Bit 3
+                 .equ	TWD4	= 4	; TWI Data Register Bit 4
+                 .equ	TWD5	= 5	; TWI Data Register Bit 5
+                 .equ	TWD6	= 6	; TWI Data Register Bit 6
+                 .equ	TWD7	= 7	; TWI Data Register Bit 7
+                 
+                 ; TWAR - TWI (Slave) Address register
+                 .equ	I2AR	= TWAR	; For compatibility
+                 .equ	TWGCE	= 0	; TWI General Call Recognition Enable Bit
+                 .equ	TWA0	= 1	; TWI (Slave) Address register Bit 0
+                 .equ	TWA1	= 2	; TWI (Slave) Address register Bit 1
+                 .equ	TWA2	= 3	; TWI (Slave) Address register Bit 2
+                 .equ	TWA3	= 4	; TWI (Slave) Address register Bit 3
+                 .equ	TWA4	= 5	; TWI (Slave) Address register Bit 4
+                 .equ	TWA5	= 6	; TWI (Slave) Address register Bit 5
+                 .equ	TWA6	= 7	; TWI (Slave) Address register Bit 6
+                 
+                 
+                 ; ***** USART ************************
+                 ; UDR - USART I/O Data Register
+                 .equ	UDR0	= 0	; USART I/O Data Register bit 0
+                 .equ	UDR1	= 1	; USART I/O Data Register bit 1
+                 .equ	UDR2	= 2	; USART I/O Data Register bit 2
+                 .equ	UDR3	= 3	; USART I/O Data Register bit 3
+                 .equ	UDR4	= 4	; USART I/O Data Register bit 4
+                 .equ	UDR5	= 5	; USART I/O Data Register bit 5
+                 .equ	UDR6	= 6	; USART I/O Data Register bit 6
+                 .equ	UDR7	= 7	; USART I/O Data Register bit 7
+                 
+                 ; UCSRA - USART Control and Status Register A
+                 .equ	MPCM	= 0	; Multi-processor Communication Mode
+                 .equ	U2X	= 1	; Double the USART transmission speed
+                 .equ	UPE	= 2	; Parity Error
+                 .equ	PE	= UPE	; For compatibility
+                 .equ	DOR	= 3	; Data overRun
+                 .equ	FE	= 4	; Framing Error
+                 .equ	UDRE	= 5	; USART Data Register Empty
+                 .equ	TXC	= 6	; USART Transmitt Complete
+                 .equ	RXC	= 7	; USART Receive Complete
+                 
+                 ; UCSRB - USART Control and Status Register B
+                 .equ	TXB8	= 0	; Transmit Data Bit 8
+                 .equ	RXB8	= 1	; Receive Data Bit 8
+                 .equ	UCSZ2	= 2	; Character Size Bit 2
+                 .equ	CHR9	= UCSZ2	; For compatibility
+                 .equ	TXEN	= 3	; Transmitter Enable
+                 .equ	RXEN	= 4	; Receiver Enable
+                 .equ	UDRIE	= 5	; USART Data register Empty Interrupt Enable
+                 .equ	TXCIE	= 6	; TX Complete Interrupt Enable
+                 .equ	RXCIE	= 7	; RX Complete Interrupt Enable
+                 
+                 ; UCSRC - USART Control and Status Register C
+                 .equ	UCPOL	= 0	; Clock Polarity
+                 .equ	UCSZ0	= 1	; Character Size Bit 0
+                 .equ	UCSZ1	= 2	; Character Size Bit 1
+                 .equ	USBS	= 3	; Stop Bit Select
+                 .equ	UPM0	= 4	; Parity Mode Bit 0
+                 .equ	UPM1	= 5	; Parity Mode Bit 1
+                 .equ	UMSEL	= 6	; USART Mode Select
+                 .equ	URSEL	= 7	; Register Select
+                 
+                 ; UBRRH - USART Baud Rate Register High Byte
+                 .equ	UBRR8	= 0	; USART Baud Rate Register bit 8
+                 .equ	UBRR9	= 1	; USART Baud Rate Register bit 9
+                 .equ	UBRR10	= 2	; USART Baud Rate Register bit 10
+                 .equ	UBRR11	= 3	; USART Baud Rate Register bit 11
+                 ;.equ	URSEL	= 7	; Register Select
+                 
+                 
+                 ; ***** PORTA ************************
+                 ; PORTA - Port A Data Register
+                 .equ	PORTA0	= 0	; Port A Data Register bit 0
+                 .equ	PA0	= 0	; For compatibility
+                 .equ	PORTA1	= 1	; Port A Data Register bit 1
+                 .equ	PA1	= 1	; For compatibility
+                 .equ	PORTA2	= 2	; Port A Data Register bit 2
+                 .equ	PA2	= 2	; For compatibility
+                 .equ	PORTA3	= 3	; Port A Data Register bit 3
+                 .equ	PA3	= 3	; For compatibility
+                 .equ	PORTA4	= 4	; Port A Data Register bit 4
+                 .equ	PA4	= 4	; For compatibility
+                 .equ	PORTA5	= 5	; Port A Data Register bit 5
+                 .equ	PA5	= 5	; For compatibility
+                 .equ	PORTA6	= 6	; Port A Data Register bit 6
+                 .equ	PA6	= 6	; For compatibility
+                 .equ	PORTA7	= 7	; Port A Data Register bit 7
+                 .equ	PA7	= 7	; For compatibility
+                 
+                 ; DDRA - Port A Data Direction Register
+                 .equ	DDA0	= 0	; Data Direction Register, Port A, bit 0
+                 .equ	DDA1	= 1	; Data Direction Register, Port A, bit 1
+                 .equ	DDA2	= 2	; Data Direction Register, Port A, bit 2
+                 .equ	DDA3	= 3	; Data Direction Register, Port A, bit 3
+                 .equ	DDA4	= 4	; Data Direction Register, Port A, bit 4
+                 .equ	DDA5	= 5	; Data Direction Register, Port A, bit 5
+                 .equ	DDA6	= 6	; Data Direction Register, Port A, bit 6
+                 .equ	DDA7	= 7	; Data Direction Register, Port A, bit 7
+                 
+                 ; PINA - Port A Input Pins
+                 .equ	PINA0	= 0	; Input Pins, Port A bit 0
+                 .equ	PINA1	= 1	; Input Pins, Port A bit 1
+                 .equ	PINA2	= 2	; Input Pins, Port A bit 2
+                 .equ	PINA3	= 3	; Input Pins, Port A bit 3
+                 .equ	PINA4	= 4	; Input Pins, Port A bit 4
+                 .equ	PINA5	= 5	; Input Pins, Port A bit 5
+                 .equ	PINA6	= 6	; Input Pins, Port A bit 6
+                 .equ	PINA7	= 7	; Input Pins, Port A bit 7
+                 
+                 
+                 ; ***** PORTB ************************
+                 ; PORTB - Port B Data Register
+                 .equ	PORTB0	= 0	; Port B Data Register bit 0
+                 .equ	PB0	= 0	; For compatibility
+                 .equ	PORTB1	= 1	; Port B Data Register bit 1
+                 .equ	PB1	= 1	; For compatibility
+                 .equ	PORTB2	= 2	; Port B Data Register bit 2
+                 .equ	PB2	= 2	; For compatibility
+                 .equ	PORTB3	= 3	; Port B Data Register bit 3
+                 .equ	PB3	= 3	; For compatibility
+                 .equ	PORTB4	= 4	; Port B Data Register bit 4
+                 .equ	PB4	= 4	; For compatibility
+                 .equ	PORTB5	= 5	; Port B Data Register bit 5
+                 .equ	PB5	= 5	; For compatibility
+                 .equ	PORTB6	= 6	; Port B Data Register bit 6
+                 .equ	PB6	= 6	; For compatibility
+                 .equ	PORTB7	= 7	; Port B Data Register bit 7
+                 .equ	PB7	= 7	; For compatibility
+                 
+                 ; DDRB - Port B Data Direction Register
+                 .equ	DDB0	= 0	; Port B Data Direction Register bit 0
+                 .equ	DDB1	= 1	; Port B Data Direction Register bit 1
+                 .equ	DDB2	= 2	; Port B Data Direction Register bit 2
+                 .equ	DDB3	= 3	; Port B Data Direction Register bit 3
+                 .equ	DDB4	= 4	; Port B Data Direction Register bit 4
+                 .equ	DDB5	= 5	; Port B Data Direction Register bit 5
+                 .equ	DDB6	= 6	; Port B Data Direction Register bit 6
+                 .equ	DDB7	= 7	; Port B Data Direction Register bit 7
+                 
+                 ; PINB - Port B Input Pins
+                 .equ	PINB0	= 0	; Port B Input Pins bit 0
+                 .equ	PINB1	= 1	; Port B Input Pins bit 1
+                 .equ	PINB2	= 2	; Port B Input Pins bit 2
+                 .equ	PINB3	= 3	; Port B Input Pins bit 3
+                 .equ	PINB4	= 4	; Port B Input Pins bit 4
+                 .equ	PINB5	= 5	; Port B Input Pins bit 5
+                 .equ	PINB6	= 6	; Port B Input Pins bit 6
+                 .equ	PINB7	= 7	; Port B Input Pins bit 7
+                 
+                 
+                 ; ***** PORTC ************************
+                 ; PORTC - Port C Data Register
+                 .equ	PORTC0	= 0	; Port C Data Register bit 0
+                 .equ	PC0	= 0	; For compatibility
+                 .equ	PORTC1	= 1	; Port C Data Register bit 1
+                 .equ	PC1	= 1	; For compatibility
+                 .equ	PORTC2	= 2	; Port C Data Register bit 2
+                 .equ	PC2	= 2	; For compatibility
+                 .equ	PORTC3	= 3	; Port C Data Register bit 3
+                 .equ	PC3	= 3	; For compatibility
+                 .equ	PORTC4	= 4	; Port C Data Register bit 4
+                 .equ	PC4	= 4	; For compatibility
+                 .equ	PORTC5	= 5	; Port C Data Register bit 5
+                 .equ	PC5	= 5	; For compatibility
+                 .equ	PORTC6	= 6	; Port C Data Register bit 6
+                 .equ	PC6	= 6	; For compatibility
+                 .equ	PORTC7	= 7	; Port C Data Register bit 7
+                 .equ	PC7	= 7	; For compatibility
+                 
+                 ; DDRC - Port C Data Direction Register
+                 .equ	DDC0	= 0	; Port C Data Direction Register bit 0
+                 .equ	DDC1	= 1	; Port C Data Direction Register bit 1
+                 .equ	DDC2	= 2	; Port C Data Direction Register bit 2
+                 .equ	DDC3	= 3	; Port C Data Direction Register bit 3
+                 .equ	DDC4	= 4	; Port C Data Direction Register bit 4
+                 .equ	DDC5	= 5	; Port C Data Direction Register bit 5
+                 .equ	DDC6	= 6	; Port C Data Direction Register bit 6
+                 .equ	DDC7	= 7	; Port C Data Direction Register bit 7
+                 
+                 ; PINC - Port C Input Pins
+                 .equ	PINC0	= 0	; Port C Input Pins bit 0
+                 .equ	PINC1	= 1	; Port C Input Pins bit 1
+                 .equ	PINC2	= 2	; Port C Input Pins bit 2
+                 .equ	PINC3	= 3	; Port C Input Pins bit 3
+                 .equ	PINC4	= 4	; Port C Input Pins bit 4
+                 .equ	PINC5	= 5	; Port C Input Pins bit 5
+                 .equ	PINC6	= 6	; Port C Input Pins bit 6
+                 .equ	PINC7	= 7	; Port C Input Pins bit 7
+                 
+                 
+                 ; ***** PORTD ************************
+                 ; PORTD - Port D Data Register
+                 .equ	PORTD0	= 0	; Port D Data Register bit 0
+                 .equ	PD0	= 0	; For compatibility
+                 .equ	PORTD1	= 1	; Port D Data Register bit 1
+                 .equ	PD1	= 1	; For compatibility
+                 .equ	PORTD2	= 2	; Port D Data Register bit 2
+                 .equ	PD2	= 2	; For compatibility
+                 .equ	PORTD3	= 3	; Port D Data Register bit 3
+                 .equ	PD3	= 3	; For compatibility
+                 .equ	PORTD4	= 4	; Port D Data Register bit 4
+                 .equ	PD4	= 4	; For compatibility
+                 .equ	PORTD5	= 5	; Port D Data Register bit 5
+                 .equ	PD5	= 5	; For compatibility
+                 .equ	PORTD6	= 6	; Port D Data Register bit 6
+                 .equ	PD6	= 6	; For compatibility
+                 .equ	PORTD7	= 7	; Port D Data Register bit 7
+                 .equ	PD7	= 7	; For compatibility
+                 
+                 ; DDRD - Port D Data Direction Register
+                 .equ	DDD0	= 0	; Port D Data Direction Register bit 0
+                 .equ	DDD1	= 1	; Port D Data Direction Register bit 1
+                 .equ	DDD2	= 2	; Port D Data Direction Register bit 2
+                 .equ	DDD3	= 3	; Port D Data Direction Register bit 3
+                 .equ	DDD4	= 4	; Port D Data Direction Register bit 4
+                 .equ	DDD5	= 5	; Port D Data Direction Register bit 5
+                 .equ	DDD6	= 6	; Port D Data Direction Register bit 6
+                 .equ	DDD7	= 7	; Port D Data Direction Register bit 7
+                 
+                 ; PIND - Port D Input Pins
+                 .equ	PIND0	= 0	; Port D Input Pins bit 0
+                 .equ	PIND1	= 1	; Port D Input Pins bit 1
+                 .equ	PIND2	= 2	; Port D Input Pins bit 2
+                 .equ	PIND3	= 3	; Port D Input Pins bit 3
+                 .equ	PIND4	= 4	; Port D Input Pins bit 4
+                 .equ	PIND5	= 5	; Port D Input Pins bit 5
+                 .equ	PIND6	= 6	; Port D Input Pins bit 6
+                 .equ	PIND7	= 7	; Port D Input Pins bit 7
+                 
+                 
+                 ; ***** SPI **************************
+                 ; SPDR - SPI Data Register
+                 .equ	SPDR0	= 0	; SPI Data Register bit 0
+                 .equ	SPDR1	= 1	; SPI Data Register bit 1
+                 .equ	SPDR2	= 2	; SPI Data Register bit 2
+                 .equ	SPDR3	= 3	; SPI Data Register bit 3
+                 .equ	SPDR4	= 4	; SPI Data Register bit 4
+                 .equ	SPDR5	= 5	; SPI Data Register bit 5
+                 .equ	SPDR6	= 6	; SPI Data Register bit 6
+                 .equ	SPDR7	= 7	; SPI Data Register bit 7
+                 
+                 ; SPSR - SPI Status Register
+                 .equ	SPI2X	= 0	; Double SPI Speed Bit
+                 .equ	WCOL	= 6	; Write Collision Flag
+                 .equ	SPIF	= 7	; SPI Interrupt Flag
+                 
+                 ; SPCR - SPI Control Register
+                 .equ	SPR0	= 0	; SPI Clock Rate Select 0
+                 .equ	SPR1	= 1	; SPI Clock Rate Select 1
+                 .equ	CPHA	= 2	; Clock Phase
+                 .equ	CPOL	= 3	; Clock polarity
+                 .equ	MSTR	= 4	; Master/Slave Select
+                 .equ	DORD	= 5	; Data Order
+                 .equ	SPE	= 6	; SPI Enable
+                 .equ	SPIE	= 7	; SPI Interrupt Enable
+                 
+                 
+                 ; ***** EEPROM ***********************
+                 ; EEDR - EEPROM Data Register
+                 .equ	EEDR0	= 0	; EEPROM Data Register bit 0
+                 .equ	EEDR1	= 1	; EEPROM Data Register bit 1
+                 .equ	EEDR2	= 2	; EEPROM Data Register bit 2
+                 .equ	EEDR3	= 3	; EEPROM Data Register bit 3
+                 .equ	EEDR4	= 4	; EEPROM Data Register bit 4
+                 .equ	EEDR5	= 5	; EEPROM Data Register bit 5
+                 .equ	EEDR6	= 6	; EEPROM Data Register bit 6
+                 .equ	EEDR7	= 7	; EEPROM Data Register bit 7
+                 
+                 ; EECR - EEPROM Control Register
+                 .equ	EERE	= 0	; EEPROM Read Enable
+                 .equ	EEWE	= 1	; EEPROM Write Enable
+                 .equ	EEMWE	= 2	; EEPROM Master Write Enable
+                 .equ	EEWEE	= EEMWE	; For compatibility
+                 .equ	EERIE	= 3	; EEPROM Ready Interrupt Enable
+                 
+                 
+                 ; ***** TIMER_COUNTER_0 **************
+                 ; TCCR0 - Timer/Counter Control Register
+                 .equ	CS00	= 0	; Clock Select 1
+                 .equ	CS01	= 1	; Clock Select 1
+                 .equ	CS02	= 2	; Clock Select 2
+                 .equ	WGM01	= 3	; Waveform Generation Mode 1
+                 .equ	CTC0	= WGM01	; For compatibility
+                 .equ	COM00	= 4	; Compare match Output Mode 0
+                 .equ	COM01	= 5	; Compare Match Output Mode 1
+                 .equ	WGM00	= 6	; Waveform Generation Mode 0
+                 .equ	PWM0	= WGM00	; For compatibility
+                 .equ	FOC0	= 7	; Force Output Compare
+                 
+                 ; TCNT0 - Timer/Counter Register
+                 .equ	TCNT0_0	= 0	; 
+                 .equ	TCNT0_1	= 1	; 
+                 .equ	TCNT0_2	= 2	; 
+                 .equ	TCNT0_3	= 3	; 
+                 .equ	TCNT0_4	= 4	; 
+                 .equ	TCNT0_5	= 5	; 
+                 .equ	TCNT0_6	= 6	; 
+                 .equ	TCNT0_7	= 7	; 
+                 
+                 ; OCR0 - Output Compare Register
+                 .equ	OCR0_0	= 0	; 
+                 .equ	OCR0_1	= 1	; 
+                 .equ	OCR0_2	= 2	; 
+                 .equ	OCR0_3	= 3	; 
+                 .equ	OCR0_4	= 4	; 
+                 .equ	OCR0_5	= 5	; 
+                 .equ	OCR0_6	= 6	; 
+                 .equ	OCR0_7	= 7	; 
+                 
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	TOIE0	= 0	; Timer/Counter0 Overflow Interrupt Enable
+                 .equ	OCIE0	= 1	; Timer/Counter0 Output Compare Match Interrupt register
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	TOV0	= 0	; Timer/Counter0 Overflow Flag
+                 .equ	OCF0	= 1	; Output Compare Flag 0
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	PSR10	= 0	; Prescaler Reset Timer/Counter1 and Timer/Counter0
+                 
+                 
+                 ; ***** TIMER_COUNTER_1 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	TOIE1	= 2	; Timer/Counter1 Overflow Interrupt Enable
+                 .equ	OCIE1B	= 3	; Timer/Counter1 Output CompareB Match Interrupt Enable
+                 .equ	OCIE1A	= 4	; Timer/Counter1 Output CompareA Match Interrupt Enable
+                 .equ	TICIE1	= 5	; Timer/Counter1 Input Capture Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	TOV1	= 2	; Timer/Counter1 Overflow Flag
+                 .equ	OCF1B	= 3	; Output Compare Flag 1B
+                 .equ	OCF1A	= 4	; Output Compare Flag 1A
+                 .equ	ICF1	= 5	; Input Capture Flag 1
+                 
+                 ; TCCR1A - Timer/Counter1 Control Register A
+                 .equ	WGM10	= 0	; Waveform Generation Mode
+                 .equ	PWM10	= WGM10	; For compatibility
+                 .equ	WGM11	= 1	; Waveform Generation Mode
+                 .equ	PWM11	= WGM11	; For compatibility
+                 .equ	FOC1B	= 2	; Force Output Compare 1B
+                 .equ	FOC1A	= 3	; Force Output Compare 1A
+                 .equ	COM1B0	= 4	; Compare Output Mode 1B, bit 0
+                 .equ	COM1B1	= 5	; Compare Output Mode 1B, bit 1
+                 .equ	COM1A0	= 6	; Compare Ouput Mode 1A, bit 0
+                 .equ	COM1A1	= 7	; Compare Output Mode 1A, bit 1
+                 
+                 ; TCCR1B - Timer/Counter1 Control Register B
+                 .equ	CS10	= 0	; Prescaler source of Timer/Counter 1
+                 .equ	CS11	= 1	; Prescaler source of Timer/Counter 1
+                 .equ	CS12	= 2	; Prescaler source of Timer/Counter 1
+                 .equ	WGM12	= 3	; Waveform Generation Mode
+                 .equ	CTC10	= WGM12	; For compatibility
+                 .equ	CTC1	= WGM12	; For compatibility
+                 .equ	WGM13	= 4	; Waveform Generation Mode
+                 .equ	CTC11	= WGM13	; For compatibility
+                 .equ	ICES1	= 6	; Input Capture 1 Edge Select
+                 .equ	ICNC1	= 7	; Input Capture 1 Noise Canceler
+                 
+                 
+                 ; ***** TIMER_COUNTER_2 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask register
+                 .equ	TOIE2	= 6	; Timer/Counter2 Overflow Interrupt Enable
+                 .equ	OCIE2	= 7	; Timer/Counter2 Output Compare Match Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag Register
+                 .equ	TOV2	= 6	; Timer/Counter2 Overflow Flag
+                 .equ	OCF2	= 7	; Output Compare Flag 2
+                 
+                 ; TCCR2 - Timer/Counter2 Control Register
+                 .equ	CS20	= 0	; Clock Select bit 0
+                 .equ	CS21	= 1	; Clock Select bit 1
+                 .equ	CS22	= 2	; Clock Select bit 2
+                 .equ	WGM21	= 3	; Waveform Generation Mode
+                 .equ	CTC2	= WGM21	; For compatibility
+                 .equ	COM20	= 4	; Compare Output Mode bit 0
+                 .equ	COM21	= 5	; Compare Output Mode bit 1
+                 .equ	WGM20	= 6	; Waveform Genration Mode
+                 .equ	PWM2	= WGM20	; For compatibility
+                 .equ	FOC2	= 7	; Force Output Compare
+                 
+                 ; TCNT2 - Timer/Counter2
+                 .equ	TCNT2_0	= 0	; Timer/Counter 2 bit 0
+                 .equ	TCNT2_1	= 1	; Timer/Counter 2 bit 1
+                 .equ	TCNT2_2	= 2	; Timer/Counter 2 bit 2
+                 .equ	TCNT2_3	= 3	; Timer/Counter 2 bit 3
+                 .equ	TCNT2_4	= 4	; Timer/Counter 2 bit 4
+                 .equ	TCNT2_5	= 5	; Timer/Counter 2 bit 5
+                 .equ	TCNT2_6	= 6	; Timer/Counter 2 bit 6
+                 .equ	TCNT2_7	= 7	; Timer/Counter 2 bit 7
+                 
+                 ; OCR2 - Timer/Counter2 Output Compare Register
+                 .equ	OCR2_0	= 0	; Timer/Counter2 Output Compare Register Bit 0
+                 .equ	OCR2_1	= 1	; Timer/Counter2 Output Compare Register Bit 1
+                 .equ	OCR2_2	= 2	; Timer/Counter2 Output Compare Register Bit 2
+                 .equ	OCR2_3	= 3	; Timer/Counter2 Output Compare Register Bit 3
+                 .equ	OCR2_4	= 4	; Timer/Counter2 Output Compare Register Bit 4
+                 .equ	OCR2_5	= 5	; Timer/Counter2 Output Compare Register Bit 5
+                 .equ	OCR2_6	= 6	; Timer/Counter2 Output Compare Register Bit 6
+                 .equ	OCR2_7	= 7	; Timer/Counter2 Output Compare Register Bit 7
+                 
+                 ; ASSR - Asynchronous Status Register
+                 .equ	TCR2UB	= 0	; Timer/counter Control Register2 Update Busy
+                 .equ	OCR2UB	= 1	; Output Compare Register2 Update Busy
+                 .equ	TCN2UB	= 2	; Timer/Counter2 Update Busy
+                 .equ	AS2	= 3	; Asynchronous Timer/counter2
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	PSR2	= 1	; Prescaler Reset Timer/Counter2
+                 
+                 
+                 ; ***** EXTERNAL_INTERRUPT ***********
+                 ; GICR - General Interrupt Control Register
+                 .equ	GIMSK	= GICR	; For compatibility
+                 .equ	IVCE	= 0	; Interrupt Vector Change Enable
+                 .equ	IVSEL	= 1	; Interrupt Vector Select
+                 .equ	INT2	= 5	; External Interrupt Request 2 Enable
+                 .equ	INT0	= 6	; External Interrupt Request 0 Enable
+                 .equ	INT1	= 7	; External Interrupt Request 1 Enable
+                 
+                 ; GIFR - General Interrupt Flag Register
+                 .equ	INTF2	= 5	; External Interrupt Flag 2
+                 .equ	INTF0	= 6	; External Interrupt Flag 0
+                 .equ	INTF1	= 7	; External Interrupt Flag 1
+                 
+                 ; MCUCR - General Interrupt Control Register
+                 .equ	ISC00	= 0	; Interrupt Sense Control 0 Bit 0
+                 .equ	ISC01	= 1	; Interrupt Sense Control 0 Bit 1
+                 .equ	ISC10	= 2	; Interrupt Sense Control 1 Bit 0
+                 .equ	ISC11	= 3	; Interrupt Sense Control 1 Bit 1
+                 
+                 ; MCUCSR - MCU Control And Status Register
+                 .equ	ISC2	= 6	; Interrupt Sense Control 2
+                 
+                 
+                 ; ***** WATCHDOG *********************
+                 ; WDTCR - Watchdog Timer Control Register
+                 .equ	WDTCSR	= WDTCR	; For compatibility
+                 .equ	WDP0	= 0	; Watch Dog Timer Prescaler bit 0
+                 .equ	WDP1	= 1	; Watch Dog Timer Prescaler bit 1
+                 .equ	WDP2	= 2	; Watch Dog Timer Prescaler bit 2
+                 .equ	WDE	= 3	; Watch Dog Enable
+                 .equ	WDCE	= 4	; Watchdog Change Enable
+                 .equ	WDTOE	= WDCE	; For compatibility
+                 
+                 
+                 ; ***** CPU **************************
+                 ; SREG - Status Register
+                 .equ	SREG_C	= 0	; Carry Flag
+                 .equ	SREG_Z	= 1	; Zero Flag
+                 .equ	SREG_N	= 2	; Negative Flag
+                 .equ	SREG_V	= 3	; Two's Complement Overflow Flag
+                 .equ	SREG_S	= 4	; Sign Bit
+                 .equ	SREG_H	= 5	; Half Carry Flag
+                 .equ	SREG_T	= 6	; Bit Copy Storage
+                 .equ	SREG_I	= 7	; Global Interrupt Enable
+                 
+                 ; MCUCR - MCU Control Register
+                 ;.equ	ISC00	= 0	; Interrupt Sense Control 0 Bit 0
+                 ;.equ	ISC01	= 1	; Interrupt Sense Control 0 Bit 1
+                 ;.equ	ISC10	= 2	; Interrupt Sense Control 1 Bit 0
+                 ;.equ	ISC11	= 3	; Interrupt Sense Control 1 Bit 1
+                 .equ	SM0	= 4	; Sleep Mode Select
+                 .equ	SM1	= 5	; Sleep Mode Select
+                 .equ	SE	= 6	; Sleep Enable
+                 .equ	SM2	= 7	; Sleep Mode Select
+                 
+                 ; MCUCSR - MCU Control And Status Register
+                 .equ	MCUSR	= MCUCSR	; For compatibility
+                 .equ	PORF	= 0	; Power-on reset flag
+                 .equ	EXTRF	= 1	; External Reset Flag
+                 .equ	BORF	= 2	; Brown-out Reset Flag
+                 .equ	WDRF	= 3	; Watchdog Reset Flag
+                 
+                 ; OSCCAL - Oscillator Calibration Value
+                 .equ	CAL0	= 0	; Oscillator Calibration Value Bit0
+                 .equ	CAL1	= 1	; Oscillator Calibration Value Bit1
+                 .equ	CAL2	= 2	; Oscillator Calibration Value Bit2
+                 .equ	CAL3	= 3	; Oscillator Calibration Value Bit3
+                 .equ	CAL4	= 4	; Oscillator Calibration Value Bit4
+                 .equ	CAL5	= 5	; Oscillator Calibration Value Bit5
+                 .equ	CAL6	= 6	; Oscillator Calibration Value Bit6
+                 .equ	CAL7	= 7	; Oscillator Calibration Value Bit7
+                 
+                 ; SFIOR - Special Function IO Register
+                 .equ	PUD	= 2	; Pull-up Disable
+                 .equ	ACME	= 3	; Anlog Comparator Multiplexer Enable
+                 
+                 ; SPMCR - 
+                 .equ	SPMEN	= 0	; Store Program Memory Enable
+                 .equ	PGERS	= 1	; Page Erase
+                 .equ	PGWRT	= 2	; Page Write
+                 .equ	BLBSET	= 3	; Boot Lock Bit Set
+                 .equ	RWWSRE	= 4	; Read-While-Write Section Read Enable
+                 .equ	RWWSB	= 6	; Read-While-Write Section Busy
+                 .equ	SPMIE	= 7	; SPM Interrupt Enable
+                 
+                 
+                 
+                 ; ***** LOCKSBITS ********************************************************
+                 .equ	LB1	= 0	; Lock bit
+                 .equ	LB2	= 1	; Lock bit
+                 .equ	BLB01	= 2	; Boot Lock bit
+                 .equ	BLB02	= 3	; Boot Lock bit
+                 .equ	BLB11	= 4	; Boot lock bit
+                 .equ	BLB12	= 5	; Boot lock bit
+                 
+                 
+                 ; ***** FUSES ************************************************************
+                 ; LOW fuse bits
+                 .equ	CKSEL0	= 0	; Select Clock Source
+                 .equ	CKSEL1	= 1	; Select Clock Source
+                 .equ	CKSEL2	= 2	; Select Clock Source
+                 .equ	CKSEL3	= 3	; Select Clock Source
+                 .equ	SUT0	= 4	; Select start-up time
+                 .equ	SUT1	= 5	; Select start-up time
+                 .equ	BODEN	= 6	; Brown out detector enable
+                 .equ	BODLEVEL	= 7	; Brown out detector trigger level
+                 
+                 ; HIGH fuse bits
+                 .equ	BOOTRST	= 0	; Select Reset Vector
+                 .equ	BOOTSZ0	= 1	; Select Boot Size
+                 .equ	BOOTSZ1	= 2	; Select Boot Size
+                 .equ	EESAVE	= 3	; EEPROM memory is preserved through chip erase
+                 .equ	CKOPT	= 4	; Oscillator Options
+                 .equ	SPIEN	= 5	; Enable Serial programming and Data Downloading
+                 .equ	WDTON	= 6	; Watchdog timer always on
+                 .equ	S8535C	= 7	; AT90S4434/8535 compabillity mode
+                 
+                 
+                 
+                 ; ***** CPU REGISTER DEFINITIONS *****************************************
+                 .def	XH	= r27
+                 .def	XL	= r26
+                 .def	YH	= r29
+                 .def	YL	= r28
+                 .def	ZH	= r31
+                 .def	ZL	= r30
+                 
+                 
+                 
+                 ; ***** DATA MEMORY DECLARATIONS *****************************************
+                 .equ	FLASHEND	= 0x0fff	; Note: Word address
+                 .equ	IOEND	= 0x003f
+                 .equ	SRAM_START	= 0x0060
+                 .equ	SRAM_SIZE	= 512
+                 .equ	RAMEND	= 0x025f
+                 .equ	XRAMEND	= 0x0000
+                 .equ	E2END	= 0x01ff
+                 .equ	EEPROMEND	= 0x01ff
+                 .equ	EEADRBITS	= 9
+                 #pragma AVRPART MEMORY PROG_FLASH 8192
+                 #pragma AVRPART MEMORY EEPROM 512
+                 #pragma AVRPART MEMORY INT_SRAM SIZE 512
+                 #pragma AVRPART MEMORY INT_SRAM START_ADDR 0x60
+                 
+                 
+                 
+                 ; ***** BOOTLOADER DECLARATIONS ******************************************
+                 .equ	NRWW_START_ADDR	= 0xc00
+                 .equ	NRWW_STOP_ADDR	= 0xfff
+                 .equ	RWW_START_ADDR	= 0x0
+                 .equ	RWW_STOP_ADDR	= 0xbff
+                 .equ	PAGESIZE	= 32
+                 .equ	FIRSTBOOTSTART	= 0xf80
+                 .equ	SECONDBOOTSTART	= 0xf00
+                 .equ	THIRDBOOTSTART	= 0xe00
+                 .equ	FOURTHBOOTSTART	= 0xc00
+                 .equ	SMALLBOOTSTART	= FIRSTBOOTSTART
+                 .equ	LARGEBOOTSTART	= FOURTHBOOTSTART
+                 
+                 
+                 
+                 ; ***** INTERRUPT VECTORS ************************************************
+                 .equ	INT0addr	= 0x0001	; External Interrupt 0
+                 .equ	INT1addr	= 0x0002	; External Interrupt 1
+                 .equ	OC2addr	= 0x0003	; Timer/Counter2 Compare Match
+                 .equ	OVF2addr	= 0x0004	; Timer/Counter2 Overflow
+                 .equ	ICP1addr	= 0x0005	; Timer/Counter1 Capture Event
+                 .equ	OC1Aaddr	= 0x0006	; Timer/Counter1 Compare Match A
+                 .equ	OC1Baddr	= 0x0007	; Timer/Counter1 Compare Match B
+                 .equ	OVF1addr	= 0x0008	; Timer/Counter1 Overflow
+                 .equ	OVF0addr	= 0x0009	; Timer/Counter0 Overflow
+                 .equ	SPIaddr	= 0x000a	; SPI Serial Transfer Complete
+                 .equ	URXCaddr	= 0x000b	; USART, RX Complete
+                 .equ	UDREaddr	= 0x000c	; USART Data Register Empty
+                 .equ	UTXCaddr	= 0x000d	; USART, TX Complete
+                 .equ	ADCCaddr	= 0x000e	; ADC Conversion Complete
+                 .equ	ERDYaddr	= 0x000f	; EEPROM Ready
+                 .equ	ACIaddr	= 0x0010	; Analog Comparator
+                 .equ	TWIaddr	= 0x0011	; Two-wire Serial Interface
+                 .equ	INT2addr	= 0x0012	; External Interrupt Request 2
+                 .equ	OC0addr	= 0x0013	; TimerCounter0 Compare Match
+                 .equ	SPMRaddr	= 0x0014	; Store Program Memory Read
+                 
+                 .equ	INT_VECTORS_SIZE	= 21	; size in words
+                 
+                 #pragma AVRPART CORE INSTRUCTIONS_NOT_SUPPORTED break
+                 
+                 #endif  /* _M8535DEF_INC_ */
+                 
+                 
+                 
+                 //			.DEVICE		ATMEGA8353
+                 			.CSEGSIZE	16
+                 
+                 
+                 			.DSEG
+                 			.ORG		0x60
+                 DataStart:
+                 
+                 			.CSEG
+                 
+                 			.ORG			0
+                 
+                 
+                 			.EQU		MOSI	= 6				; SPI Interface
+                 			.EQU		SCK		= 7
+                 
+                 			.EQU		CSREG = PINC			; Put Chip selects on port C
+                 			.EQU		A2DBUSY = 6				; Put A/D busy on pin 6			;
+                 			.EQU		CS_A2D	= 0b00000001	; A/D chip select bit, active low
+                 			.EQU		CS_D2A	= 0b00000010	; D/A chip select bit, active low
+                 			.EQU		CS_RTC	= 0b10000100	; Real-time clock chip select bit, active high
+                 
+                 
+                 			; RTC Register read addresses; write addresses are 0x80 more
+                 
+                 			.EQU		RTC_SEC		= 0x00
+                 			.EQU		RTC_MIN		= 0x01
+                 			.EQU		RTC_HOURS	= 0x02
+                 			.EQU		RTC_DAY		= 0x03
+                 			.EQU		RTC_DATE	= 0x04
+                 			.EQU		RTC_MONTH	= 0x05
+                 			.EQU		RTC_YEAR	= 0x06
+                 			.EQU		RTC_CTRL	= 0x0F
+                 			.EQU		RTC_STATUS	= 0x10
+                 
+                 ;=================================================================================================
+                 ; Interrupt vectors
+                 ;
+                 ; All must be one-word op code
+                 			
+000000 c016      			RJMP	Initialize					; Reset
+000001 c095      			RJMP	ProcessLoop					; Ext INT 0
+000002 9518      			RETI								; Ext INT 1
+000003 9518      			RETI								; TC2 Compare Match
+000004 9518      			RETI								; TC2 Overflow
+000005 9518      			RETI								; TC1 Capture Event
+000006 9518      			RETI								; TC1 Compare Match A
+000007 9518      			RETI								; TC1 Compare Match B
+000008 9518      			RETI								; TC1 Overflow
+000009 9518      			RETI								; TCO Overflow
+00000a 9518      			RETI								; USART Rx Complete
+00000b 9518      			RETI								; USART Data Register Empty
+00000c 9518      			RETI								; USART Tx Complete
+00000d 9518      			RETI								; A/D Complete	
+00000e 9518      			RETI								; EEPROM Ready
+00000f 9518      			RETI								; Analog Comparator
+000010 9518      			RETI								; TWI
+000011 9518      			RETI								; Ext INT 2
+000012 9518      			RETI								; TC0 Compare Match
+000013 9518      			RETI								; Store Program Memory Ready
+                 			
+                 			.ORG	22							; End of interrupt vectors
+                 			
+                 DoNothing:
+000016 9518      			RETI
+                 
+                 ;=================================================================================================
+                 ; Initialize processor and perpherials
+                 
+                 
+                 Initialize:
+000017 e002      			LDI		R16, HIGH(RamEnd)			; Set stack pointer to top of RAM
+000018 bf0e      			OUT		SPH, R16
+000019 e50f      			LDI		R16, LOW(RamEnd)
+00001a bf0d      			OUT		SPL, R16
+                 
+00001b b704      			IN		R16, MCUCSR					; If caused by watchdog timer, skip warmup sequence
+00001c ff03      			SBRS	R16, WDRF
+00001d d01f      			RCALL	PowerUp
+                 
+00001e 1b00      			SUB		R16, R16
+00001f bb0a      			OUT		DDRA, R16					; Set port A to watch for buttons pressed
+000020 e31f      			LDI		R17, 0x3F
+000021 bb1b      			OUT		PORTA, R17					; Enable pullup resisters for six pins
+                 			
+                 			; The SPI talks to the A/D, the D/A and the real-time clock.
+                 
+000022 ec10      			LDI		R17,(1<<MOSI)|(1<<SCK)		; Set MOSI and SCK output, all others input
+000023 bb1a      			OUT		DDRA, R17
+000024 e511      			LDI		R17,(1<<SPE)|(1<<MSTR)|(1<<SPR0); Enable SPI, Master, set clock rate fck/16
+000025 b91d      			OUT		SPCR, R17
+                 
+000026 e01f      			LDI		R17, RTC_CTRL
+000027 e800      			LDI		R16, 0b10000000				; Enable RTC oscillator
+000028 d05c      			RCALL	RTCWrite
+000029 e012      			LDI		R17, RTC_HOURS
+00002a d061      			RCALL	RTCRead
+00002b 6400      			ORI		R16, 0b01000000				; Make sure clock is in 24-hour mode.  No option for 12-hour
+00002c d058      			RCALL	RTCWrite
+                 			
+                 
+00002d e01f      			LDI		R17, 0xF					; Initialize the watchdog timer for about 2 seconds
+00002e bd01      			OUT		WDTCR, R16
+                 
+00002f b704      			IN		R16, MCUCSR					; If caused by watchdog timer, skip A/D cal sequence...
+000030 ff03      			SBRS	R16, WDRF
+000031 d045      			RCALL	CalibrateA2D
+                 
+000032 1b11      			SUB		R17, R17					; ... and zeroing recorder output
+000033 1b00      			SUB		R16, R16
+000034 d05d      			RCALL	DACWrite
+                 
+                 IdleReady:
+000035 1b00      			SUB		R16, R16
+000036 bf05      			OUT		MCUCR, R16					; Set sleep mode to IDLE
+                 
+000037 9300 00a4 			STS		LastA2DMode, R16			; Start A/D running.  Take a temperature measurement
+000039 d152      			RCALL	ExchangeA2D					; so the first signal measurement has the temperature.
+                 
+                 IdleLoop:			
+00003a 9478      			SEI									; Enable interrupts and wait for something to happen
+00003b 9588      			SLEEP
+00003c cffd      			RJMP	IdleLoop
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; The warmup sequence
+                 
+                 PowerUp:
+00003d 940e 09b1 			CALL	LCDClear
+                 
+                 
+                 			; Clear RAM
+                 
+00003f e0b0      			LDI		XH, HIGH(DataStart)
+000040 e6a0      			LDI		XL, LOW(DataStart)
+000041 e0d0      			LDI		YH, HIGH(DataEnd-DataStart)
+000042 ecc6      			LDI		YL, LOW(DataEnd-DataStart)
+000043 1b00      			SUB		R16, R16
+                 ClearRAMLoop:
+000044 930d      			ST		X+, R16
+000045 9721      			SBIW	YH:YL, 1
+000046 f7e9      			BRNE	ClearRAMLoop
+                 
+000047 e040      			LDI		R20, HIGH(FilterConstants)	; Save filter constants to RAM from EEPROM
+000048 e330      			LDI		R19, LOW(FilterConstants)
+000049 e0d0      			LDI		YH, HIGH(SignalFilter+FilterConstant)
+00004a e6c2      			LDI		YL, LOW(SignalFilter+FilterConstant)
+00004b d396      			RCALL	ReadEEPROM
+00004c 8328      			ST		Y,	R18
+00004d e0d0      			LDI		YH, HIGH(TemperatureFilter+FilterConstant)
+00004e e6ce      			LDI		YL, LOW(TemperatureFilter+FilterConstant)
+00004f d392      			RCALL	ReadEEPROM
+000050 8328      			ST		Y,	R18
+000051 e0d0      			LDI		YH, HIGH(CalibrationFilter+FilterConstant)
+000052 e7ca      			LDI		YL, LOW(CalibrationFilter+FilterConstant)
+000053 d38e      			RCALL	ReadEEPROM
+000054 8328      			ST		Y,	R18
+                 
+                 
+000055 e001      			LDI		R16, 1						; Default to pH mode
+000056 d18e      			RCALL	ModeChangeSave
+000057 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Exchange the 16 bits in R3:R2 with the SPI peripheral selected by bit mask in R16
+                 
+                 SPIInterface16:
+000058 d00a      			RCALL	EnableSPIDevice
+000059 b83f      			OUT		SPDR, R3					; Start transmission of data (r16)
+                 SPI16Wait1:
+00005a 9b77      			SBIS	SPSR, SPIF					; Wait for transmission complete
+00005b cffe      			RJMP	SPI16Wait1
+00005c b03f      			IN		R3, SPDR
+00005d b82f      			OUT		SPDR, R2
+                 SPI16Wait2:
+00005e 9b77      			SBIS	SPSR, SPIF					; Wait for transmission complete
+00005f cffe      			RJMP	SPI16Wait2
+000060 b02f      			IN		R2, SPDR
+000061 d00b      			RCALL	DisableSPIDevice			; Disable the chip 
+000062 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Enable/disable SPI chip select.  Lower few bits of R16 select which chip select.  Bit 7 is 0 for active
+                 ; low and 1 for active high.  Bit 7 of output port will toggle
+                 
+                 EnableSPIDevice:
+000063 b213      			IN		R1, CSREG
+000064 2300      			TST		R16
+000065 f414      			BRGE	EnableSPIActiveLow
+000066 2a10      			OR		R1, R16
+000067 c003      			RJMP	EnableSPIOut
+                 EnableSPIActiveLow:
+000068 9500      			COM		R16
+000069 2210      			AND		R1, R16
+00006a 9500      			COM		R16
+                 EnableSPIOut:
+00006b ba13      			OUT		CSREG, R1					; Set the chip select
+00006c 9508      			RET
+                 
+                 DisableSPIDevice:
+00006d b213      			IN		R1, CSREG
+00006e 2300      			TST		R16
+00006f f424      			BRGE	DisableSPIActiveLow
+000070 9500      			COM		R16
+000071 2210      			AND		R1, R16
+000072 9500      			COM		R16
+000073 cff7      			RJMP	EnableSPIOut
+                 DisableSPIActiveLow:
+000074 2a10      			OR		R1, R16
+                 DisableSPIOut:
+000075 ba13      			OUT		CSREG, R1					; Set the chip select
+000076 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Perform A2D calibration.  Absolute accuracy is not an issue except for MV because we have our
+                 ; own cal tables.  Repeatability, however, is.  Calibration improves temperature drift.
+                 
+                 CalibrateA2D:
+000077 e836      			LDI		R19, 0b10000110
+000078 e02c      			LDI		R18, 0b00001100				; Offset correction
+000079 d005      			RCALL	A2DWithWait
+00007a e028      			LDI		R18, 0b00001000				; Gain correction
+00007b d003      			RCALL	A2DWithWait
+00007c e024      			LDI		R18, 0b00000100				; Null offset
+00007d d001      			RCALL	A2DWithWait
+00007e 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Execute an A/D process with 16-bit data in R19:R18, waiting for the results.  Intended for A/D cal
+                 ; sequence that occurs with interrupts disabled.  Does not return result.
+                 
+                 A2DWithWait:
+00007f 2e33      			MOV		R3, R19
+000080 2e22      			MOV		R2, R18
+000081 dfd6      			RCALL	SPIInterface16
+                 A2DWithWaitLoop:
+000082 9b9e      			SBIS	CSREG, A2DBUSY
+000083 cffe      			RJMP	A2DWithWaitLoop
+000084 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Read/Write R16 from/to RTC register specified by R17, retaining R17
+                 
+                 RTCWrite:
+000085 6810      			ORI		R17, 0x80					; Convert to write address
+000086 2e31      			MOV		R3, R17
+000087 771f      			ANDI	R17, 0x7F
+000088 2e20      			MOV		R2, R16
+000089 e804      			LDI		R16, CS_RTC					; RTC chip select
+00008a dfcd      			RCALL	SPIInterface16
+00008b 9508      			RET
+                 
+                 RTCRead:
+00008c 2e31      			MOV		R3, R17
+00008d 2e20      			MOV		R2, R16
+00008e e804      			LDI		R16, CS_RTC					; RTC chip select
+00008f dfc8      			RCALL	SPIInterface16
+000090 2d02      			MOV		R16, R2
+000091 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Write R17:R16 to DAC
+                 
+                 DACWrite:
+000092 2e31      			MOV		R3, R17
+000093 2e20      			MOV		R2, R16
+000094 e002      			LDI		R16, CS_D2A
+000095 dfc2      			RCALL	SPIInterface16
+000096 9508      			RET
+                 
+                 ;=================================================================================================
+                 ; Signal Processing
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Data for signal processing
+                 
+                 			.DSEG
+                 
+                 			; Define offsets into filter structure
+                 
+                 			.EQU	FilterInput  	= 0
+                 			.EQU	FilterConstant  = 2		; Must be a power of two for division by shift
+                 			.EQU	FilterSpare		= 3
+                 			.EQU	FilterAccum		= 4
+                 			.EQU	FilterFloat		= 8
+                 			.EQU	FilterSize		= 12
+                 
+                 SignalFilter: 	
+000060           			.BYTE	FilterSize
+                 SignalFilterEnd:
+                 
+                 TemperatureFilter:
+00006c           			.BYTE	FilterSize
+                 TemperatureFilterEnd:
+                 
+                 CalibrationFilter:
+000078           			.BYTE	FilterSize
+                 CalibrationFilterEnd:
+                 
+                 
+                 ; RAM-based cal table for current ion
+                 
+000084           CalTable:	.BYTE	24
+                 
+                 ; RAM-based math constants, variables
+                 
+00009c 00 00
+00009e 00 00     DegF:		.DD		0
+0000a0 00 00
+0000a2 00 00     ITemp:		.DD		0
+                 
+                 ; Operational variables
+                 
+                 LastA2DMode:
+0000a4 00        			.DB		0
+                 RawCalSignal:
+0000a5 00 00
+0000a7 00 00     			.DD		0
+                 TempComp:
+0000a9 00 00
+0000ab 00 00     			.DD		0
+                 ReportInterval:
+0000ad 00        			.DB		0
+                 
+                 			.CSEG
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Execute a cycle of the process loop
+                 ; Have to complete this in about 64ms
+                 
+                 ProcessLoop:
+                 
+                 			; Get Last A/D measurement and put it the right place.  Start next one.
+                 			
+000097 d0f4      			RCALL	ExchangeA2D					; Get Last A/D measurement; start next one
+000098 ea04      			LDI		R16, LastA2DMode			; Put results into the correct filter
+000099 2300      			TST		R16
+00009a f419      			BRNE	ProcessSaveTemperature
+00009b d00b      			RCALL	SignalProcessor
+00009c e001      			LDI		R16, 1						; Waiting for temperature reading
+00009d c004      			RJMP	ProcessSaveState
+                 
+                 ProcessSaveTemperature:
+00009e e0f0      			LDI		ZH, HIGH(TemperatureFilter)
+00009f e6ec      			LDI		ZL, LOW(TemperatureFilter)
+0000a0 d050      			RCALL	ProcessSignal
+0000a1 1b00      			SUB		R16, R16					; Waiting for signal reading
+                 
+                 ProcessSaveState:
+0000a2 9300 00a4 			STS		LastA2DMode, R16
+                 
+0000a4 d105      			RCALL	ParseUserInput				; Now to everything else
+0000a5 d38d      			RCALL	UpdateDisplay
+0000a6 9518      			RETI
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; A single cycle of the signal processing
+                 
+                 SignalProcessor:
+0000a7 e0f0      			LDI		ZH, HIGH(SignalFilter)		; Run the signal filter
+0000a8 e6e0      			LDI		ZL, LOW(SignalFilter)
+0000a9 d047      			RCALL	ProcessSignal
+                  
+0000aa 9140 00b1 			LDS		R20, OpMode
+0000ac 2344      			TST		R20							; If in mV mode, skip cal and TC. 
+0000ad f101      			BREQ	PrepareMV					; ??? Might want to add mV cal tables, but need references
+                 
+0000ae 9140 00b2 			LDS		R20, CalMode				; Are we in calibration mode?
+0000b0 2344      			TST		R20
+0000b1 f069      			BREQ	CheckTC	
+0000b2 93ff      			PUSH	ZH
+0000b3 93ef      			PUSH	ZL
+0000b4 e0f0      			LDI		ZH, HIGH(CalibrationFilter)	; The calibration filter runs off the ouput
+0000b5 e7f8      			LDI		ZH, LOW(CalibrationFilter)	; of the signal filter, and so is a 2-pole
+0000b6 8300      			STD		Z+FilterInput+0, R16		; filter.  
+0000b7 8311      			STD		Z+FilterInput+1, R17
+0000b8 d03c      			RCALL	RunFilter
+0000b9 9638      			ADIW	ZH:ZL, FilterFloat			; Keep copy of uncorrected value for insertion
+0000ba e0d0      			LDI		YH, HIGH(RawCalSignal)		; into cal tables
+0000bb eac5      			LDI		YL, LOW(RawCalSignal)
+0000bc d383      			RCALL	Move4ZtoY
+0000bd 91ef      			POP		ZL
+0000be 91ff      			POP		ZH
+                 
+                 CheckTC:
+0000bf 9100 00b0 			LDS		R16, ProcessStatus
+0000c1 ff03      			SBRS	R16, PS_MANTEMP
+0000c2 c009      			RJMP	ApplyTC
+                 
+0000c3 93ff      			PUSH	ZH							; If not using manual temperature compensation,
+0000c4 93ef      			PUSH	ZL							; move output of temperature filter to TempComp
+0000c5 e0f0      			LDI		ZH, HIGH(TemperatureFilter)
+0000c6 e6ec      			LDI		ZL, LOW(TemperatureFilter)
+0000c7 e0d0      			LDI		YH, HIGH(TempComp)
+0000c8 eac9      			LDI		YL, LOW(TempComp)
+0000c9 d376      			RCALL	Move4ZtoY
+0000ca 91ef      			POP		ZL
+0000cb 91ff      			POP		ZH
+                 
+                 ApplyTC:
+0000cc d075      			RCALL	ConvertToNominal
+0000cd c009      			RJMP	DisplayOutput
+                 
+                 PrepareMV:
+0000ce e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+0000cf e0e0      			LDI		ZL, HIGH(SignalFilter+FilterFloat)
+0000d0 d558      			RCALL	FSRAMA1
+0000d1 e0f2      			LDI		ZH, HIGH(CA2DMax)
+0000d2 e7ed      			LDI		ZL,	LOW(CA2DMax)
+0000d3 d4b0      			RCALL	FMULMEM
+0000d4 e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+0000d5 e0e0      			LDI		ZL, HIGH(SignalFilter+FilterFloat)
+0000d6 d399      			RCALL	MSave1ToMem
+                 
+                 DisplayOutput:
+0000d7 e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+0000d8 e0e0      			LDI		ZL, HIGH(SignalFilter+FilterFloat)
+0000d9 e0d0      			LDI		YH, HIGH(ReadoutBuf)
+0000da efc3      			LDI		YL, LOW(ReadoutBuf)
+0000db d30e      			RCALL	Write3Point2
+                 
+0000dc e0f0      			LDI		ZH, HIGH(TemperatureFilter+FilterFloat)
+0000dd e7e4      			LDI		ZL, LOW(TemperatureFilter+FilterFloat)
+0000de 9100 00b0 			LDs		R16, ProcessStatus
+0000e0 fb04      			BST		R16, PS_DEGF				; Convert to Fahrenheit if requested.
+0000e1 f456      			BRTC	DisplayTemperature			; I'm not sure why I bothered with this
+0000e2 d546      			RCALL	FSRAMA1
+0000e3 e0f2      			LDI		ZH, HIGH(C5over9)
+0000e4 e7eb      			LDI		ZL, LOW(C5over9)
+0000e5 d49e      			RCALL	FMULMEM
+0000e6 e0f2      			LDI		ZH, HIGH(C32)
+0000e7 e8f9      			LDI		ZH, LOW(C32)
+0000e8 d3f7      			RCALL	FADDMEM
+0000e9 e0f0      			LDI		ZH, HIGH(DegF)
+0000ea e9ec      			LDI		ZL, LOW(DegF)
+0000eb d384      			RCALL	MSave1ToMem			
+                 
+                 DisplayTemperature:
+0000ec e0d0      			LDI		YH, HIGH(LineBuffer+TempOffset)
+0000ed ecdb      			LDI		YH, LOW(LineBuffer+TempOffset)
+0000ee d2fb      			RCALL	Write3Point2
+                 
+0000ef d342      			RCALL	RecorderOutput
+                 
+0000f0 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Process a given input (signal or temperature) based on filter at ZH:ZL and  
+                 ; cal table at XH:ZL
+                 
+                 ProcessSignal:
+0000f1 d003      			RCALL	RunFilter
+0000f2 d032      			RCALL	ConvertSignalToFloat
+0000f3 d06b      			RCALL	FitCalibration
+0000f4 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Run n-measurement filter indicated by Z register  By convention, Z points to a filter structure
+                 
+                 RunFilter:
+0000f5 2fdf      			MOV		YH, ZH						; X -> new filter entry
+0000f6 2fce      			MOV		YL, ZL
+0000f7 8102      			LDD		R16, Z+FilterConstant
+0000f8 2e00      			MOV		R0, R16
+0000f9 9634      			ADIW	ZH:ZL, FilterAccum			; Accumulator carries filter average times filter constant n
+0000fa 8100      			LD		R16, Z						; We want new signal + average *(n-1)
+0000fb 9141      			LD		R20, Z+
+0000fc 8110      			LD		R17, Z						; acc = avg * n so avg*(n-1) = acc/n * (n-1) = acc - acc/n
+0000fd 9151      			LD		R21, Z+						;
+0000fe 8120      			LD		R18, Z
+0000ff 9161      			LD		R22, Z+
+000100 8130      			LD		R19, Z
+000101 9171      			LD		R23, Z+
+                 
+000102 1811      			SUB		R1, R1
+000103 941a      			DEC		R1
+                 RunFilterFindN:									; Get N in R1
+000104 9413      			INC		R1
+000105 9406      			LSR		R0
+000106 f7e8      			BRCC	RunFilterFindN
+                 
+                 RunFilterDivByN:								; Div Accumulator value in R23::R20 by N
+000107 9576      			LSR		R23		
+000108 9567      			ROR		R22
+000109 9557      			ROR		R21
+00010a 9547      			ROR		R20
+00010b 941a      			DEC		R1
+00010c f7d1      			BRNE	RunFilterDivByN
+                 
+00010d 1b04      			SUB		R16, R20					; Subtract acc/n from acc
+00010e 0b15      			SBC		R17, R21
+00010f 0b26      			SBC		R18, R22
+000110 0b37      			SBC		R19, R23
+                 
+000111 2ffd      			MOV		ZH, YH						; Add new measurement to accumulator
+000112 2fec      			MOV		ZL, YL
+000113 9630      			ADIW	ZH:ZL, FilterInput
+000114 9141      			LD		R20, Z+
+000115 0f04      			ADD		R16, R20
+000116 9141      			LD		R20, Z+
+000117 1f14      			ADC		R17, R20
+000118 1b44      			SUB		R20, R20
+000119 1f24      			ADC		R18, R20
+00011a 1f34      			ADC		R19, R20
+                 
+00011b 2ffd      			MOV		ZH, YH						; Save new result
+00011c 2fec      			MOV		ZL, YL
+00011d 9634      			ADIW	ZH:ZL, FilterAccum
+00011e 9301      			ST		Z+, R16
+00011f 9311      			ST		Z+, R17
+000120 9321      			ST		Z+, R18
+000121 9331      			ST		Z+, R19
+000122 2ffd      			MOV		ZH, YH
+000123 2fec      			MOV		ZL, YL
+000124 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Convert the fixed value in A/D bits in the Filter Structure @Z to floating point in Z->FilterFloat
+                 
+                 
+                 ConvertSignalToFloat:
+000125 2fdf      			MOV		YH, ZH
+000126 2fce      			MOV		YL, ZL
+000127 8152      			LDD		R21, Z+FilterConstant		; R21 = filter constant
+000128 1b66      			SUB		R22, R22					; R22 = 0
+000129 8100      			LDD		R16, Z+0					; Get accumulator
+00012a 8111      			LDD		R17, Z+1
+00012b 8122      			LDD		R18, Z+2
+00012c 8133      			LDD		R19, Z+3
+                 ConvertSignalScale:								; Divide it by filter constant
+00012d 9556      			LSR		R21
+00012e f028      			BRCS	ConvertSignalScaled
+00012f 9536      			LSR		R19
+000130 9527      			ROR		R18
+000131 9517      			ROR		R17
+000132 9507      			ROR		R16
+000133 cff9      			RJMP	ConvertSignalScale
+                 ConvertSignalScaled:
+000134 e0f0      			LDI		ZH, HIGH(ITemp)
+000135 eae0      			LDI		ZL, LOW(Itemp)
+000136 8300      			STD		Z+0, R16					; Save it to ITemp
+000137 8311      			STD		Z+1, R17
+000138 8322      			STD		Z+2, R18
+000139 8343      			STD		Z+3, R20
+00013a d4d6      			RCALL	ITOFMEM						; Convert to float
+00013b 2ffd      			MOV		ZH, YH
+00013c 2fec      			MOV		ZL, YL
+00013d 9634      			ADIW	ZH:ZL, FilterAccum
+00013e d331      			RCALL	MSave1ToMem					; Save float value.
+00013f 2ffd      			MOV		ZH, YH
+000140 2fec      			MOV		ZL, YL
+000141 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Temperature compensation routines.  Act on result value in filter structure @Z
+                 /*
+                 ConvertToStandardized:
+                 			PUSH	ZH
+                 			PUSH	ZL
+                 			LDI		ZH, HIGH(TemperatureFilter+FilterFloat)
+                 			LDI		ZL, LOW(TemperatureFIlter+FilterFloat)
+                 			RCALL	FSRAMA1						; Measured Temperature
+                 			LDI		ZH, HIGH(C273)
+                 			LDI		ZL, LOW(C273)
+                 			RCALL	FADDROM						; Convert to absolute
+                 			LDI		ZH, HIGH(C298)
+                 			LDI		ZL, LOW(C298)
+                 			RCALL	FDIVROM						; Divide by std temp absolute
+                 			POP		ZL
+                 			POP		ZH
+                 			PUSH	ZH
+                 			PUSH	ZL
+                 			ADIW	ZH:ZL, FilterFloat
+                 			RCALL	FMULMEM						; Multiply by measured value
+                 			POP		ZL
+                 			POP		ZL
+                 			ADIW	ZH:ZL, FilterFloat
+                 			RCALL	MSave1ToMem
+                 			RET
+                 */
+                 ConvertToNominal:
+000142 93ff      			PUSH	ZH
+000143 93ef      			PUSH	ZL
+000144 e0f0      			LDI		ZH, HIGH(TemperatureFilter+FilterFloat)
+000145 e7e4      			LDI		ZL, LOW(TemperatureFIlter+FilterFloat)
+000146 d4e2      			RCALL	FSRAMA1						; Measured Temperature
+000147 e0f2      			LDI		ZH, HIGH(C273)
+000148 e7e7      			LDI		ZL, LOW(C273)
+000149 d396      			RCALL	FADDMEM						; Convert to absolute
+00014a 91ef      			POP		ZL
+00014b 91ff      			POP		ZH
+00014c 93ff      			PUSH	ZH
+00014d 93ef      			PUSH	ZL
+00014e 9638      			ADIW	ZH:ZL, FilterFloat
+00014f d320      			RCALL	MSave1ToMem					; Invert
+000150 d3fe      			RCALL	F1OVERMEM
+000151 e0f2      			LDI		ZH, HIGH(C298)
+000152 e7e9      			LDI		ZL, LOW(C298)
+000153 d430      			RCALL	FMULMEM						; Mult by std absolute
+000154 91ef      			POP		ZL
+000155 91ff      			POP		ZH
+000156 93ff      			PUSH	ZH
+000157 93ef      			PUSH	ZL
+000158 9638      			ADIW	ZH:ZL, FilterFloat
+000159 d42a      			RCALL	FMULMEM						; Multiply by standardized value
+00015a 91ef      			POP		ZL
+00015b 91ef      			POP		ZL
+00015c 9638      			ADIW	ZH:ZL, FilterFloat
+00015d d312      			RCALL	MSave1ToMem
+00015e 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Calibrate signal in specified structure against calibration table @X
+                 
+                 FitCalibration:
+00015f e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+000160 e6e8      			LDI		ZL, LOW(SignalFilter+FilterFloat)
+000161 d4c7      			RCALL	FSRAMA1
+000162 2ffb      			MOV		ZH, XH
+000163 2fea      			MOV		ZL, XL
+000164 9638      			ADIW	Z, 8
+000165 d47c      			RCALL	FLTCPMEM					; Determine which leg of cal table to use
+000166 f40c      			BRGE	StartFit
+000167 9738      			SBIW	Z, 8
+                 
+                 StartFit:
+000168 9638      			ADIW	Z, 8
+000169 d4bf      			RCALL	FSRAMA1
+00016a 9738      			SBIW	Z, 8
+00016b d365      			RCALL	FSUBMEM						; x1-x0
+00016c e0f0      			LDI		ZH, HIGH(ITemp)
+00016d eae0      			LDI		ZL, LOW(ITemp)
+00016e d301      			RCALL	MSave1ToMem
+00016f 2ffb      			MOV		ZH, XH
+000170 2fea      			MOV		ZL, XL
+000171 963c      			ADIW	Z, 12
+000172 d4b6      			RCALL	FSRAMA1
+000173 9738      			SBIW	Z, 8
+000174 d35c      			RCALL	FSUBMEM						; y1-y0
+000175 e0f0      			LDI		ZH, HIGH(ITemp)
+000176 eae0      			LDI		ZL, LOW(ITemp)
+000177 d3df      			RCALL	FDIVMEM						; (y1-y0)/(x1-x0)
+000178 e0f0      			LDI		ZH, HIGH(ITemp)
+000179 eae0      			LDI		ZL, LOW(ITemp)
+00017a d2f5      			RCALL	MSave1ToMem
+00017b e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+00017c e6e8      			LDI		ZL, LOW(SignalFilter+FilterFloat)
+00017d d4ab      			RCALL	FSRAMA1
+00017e 2ffb      			MOV		ZH, XH
+00017f 2fea      			MOV		ZL, XL
+000180 d350      			RCALL	FSUBMEM						; x-x0
+000181 e0f0      			LDI		ZH, HIGH(ITemp)
+000182 eae0      			LDI		ZL, LOW(ITemp)
+000183 d400      			RCALL	FMULMEM						; (x-x0)(y1-y0)/(x1-x0)
+000184 2ffb      			MOV		ZH, XH
+000185 2fea      			MOV		ZL, XL
+000186 9634      			ADIW	Z, 4
+000187 d3fc      			RCALL	FMULMEM						; y=y0(x-x0)(y1-y0)/(x1-x0)
+000188 e0f0      			LDI		ZH, HIGH(SignalFilter+FilterFloat)
+000189 e0e0      			LDI		ZL, HIGH(SignalFilter+FilterFloat)
+00018a d2e5      			RCALL	MSave1ToMem
+00018b 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Get the results of the last A/D conversion in R3:R2 and start the the next one, chosing the 
+                 ; other port from last time.  LastA2DMode is 0 for signal, 1 for temp, corresponding to A/D channel
+                 
+                 ExchangeA2D:
+00018c 930f      			PUSH	R16
+00018d ea04      			LDI		R16, LastA2DMode
+00018e 9503      			INC		R16
+00018f 3002      			CPI		R16, 2
+000190 f008      			BRLO	ExchangeA2DInstr
+000191 1b00      			SUB		R16, R16
+                 ExchangeA2DInstr:
+000192 0f00      			LSL		R16
+000193 0f00      			LSL		R16
+000194 0f00      			LSL		R16
+000195 0f00      			LSL		R16
+000196 2e20      			MOV		R2, R16
+000197 e806      			LDI		R16, 0b10000110
+000198 2e30      			MOV		R3, R16
+000199 e001      			LDI		R16, CS_A2D
+00019a debd      			RCALL	SPIInterface16
+00019b 910f      			POP		R16
+00019c 9508      			RET
+                 
+                 ;=================================================================================================
+                 ; Process keypresses and dispatch accordingly
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Input and state variables
+                 
+                 				.DSEG
+0000ae 00        LastScan:		.DB		0
+0000af 00        CapturedKey:	.DB		0
+0000b0 00        ProcessStatus:	.DB		0
+                 				.EQU	PS_KEYCAP	= 0			; Keypad capture
+                 				.EQU	PS_MV		= 2			; Display raw millivolts
+                 				.EQU	PS_MANTEMP	= 3			; Using manually set temperature 
+                 				.EQU	PS_DEGF		= 4			; Displey temperature in Fahrenheit
+                 
+0000b1 00        OpMode:			.DB		0
+0000b2 00        CalMode:		.DB		0
+0000b3 01        CalPoint:		.DB		1						; Which calibration point we are setting							
+0000b4 01        InitCal:		.DB		1						; Calibration needs to be initialized
+                 
+                 
+                 ; Key definitions
+                 				.EQU	KEY_NONE	= 0
+                 				.EQU	KEY_MODE	= 1
+                 				.EQU	KEY_CAL		= 2
+                 				.EQU	KEY_DOWN	= 3
+                 				.EQU	KEY_UP		= 4
+                 				.EQU	KEY_ENTER	= 5
+                 
+                 				.CSEG
+                 
+                 KeyDispatchTable:
+00019d 01df      				.DW		ModeChange
+00019e 0208      				.DW		CalModeChange
+00019f 01de      				.DW		ParseKeyDone
+0001a0 01de      				.DW		ParseKeyDone
+0001a1 01de      				.DW		ParseKeyDone
+                 
+                 CalDispatchTable:
+0001a2 01de      				.DW		ParseKeyDone				; Nothing
+0001a3 02ba      				.DW		CalISEpH					; Calibrate current ion
+0001a4 02f5      				.DW		CalTemp						; Calibrate temperature probe
+0001a5 033e      				.DW		SetTempMode					; Set Temperature mode
+0001a6 036c      				.DW		SetTempDisplay				; Set temperature display mode C/F
+0001a7 037f      				.DW		SetReportInterval			; Set report interval
+0001a8 03a6      				.DW		SetClock					; Set clock
+0001a9 01de      				.DW		ParseKeyDone				; Set baud rate
+                 CalDispatchTableEnd:
+                 
+                 				.EQU	NumCalModes	= (CalDispatchTableEnd-CalDispatchTable)/2
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Parse the keys
+                 
+                 ParseUserInput:
+0001aa b306      			IN		R16, PINB
+0001ab 9501      			NEG		R16
+0001ac e016      			LDI		R17, 6
+0001ad 1b22      			SUB		R18, R18
+0001ae 9320 00af 			STS		CapturedKey, R18			; No key captured yet
+                 ParseKeyNextBit:
+0001b0 9523      			INC		R18
+0001b1 9506      			LSR		R16							; Take the first bit found as the pressed key
+0001b2 f028      			BRCS	ParseKeyFound
+0001b3 951a      			DEC		R17
+0001b4 f7d9      			BRNE	ParseKeyNextBit
+0001b5 9310 00ae 			STS		LastScan, R17				; If none found, save nothing and get out.
+0001b7 c026      			RJMP	ParseKeyDone
+                 
+                 ParseKeyFound:
+0001b8 9130 00ae 			LDS		R19, LastScan				; Must match last scan for 25ms debounce time
+0001ba 9320 00ae 			STS		LastScan, R18
+0001bc 1732      			CP		R19, R18
+0001bd f501      			BRNE	ParseKeyDone
+0001be eb00      			LDI		R16, ProcessStatus
+0001bf fb00      			BST		R16, PS_KEYCAP				; If key capture is set, save it
+0001c0 f47e      			BRTC	ParseKeyDispatch
+0001c1 9320 00af 			STS		CapturedKey, R18
+                 
+0001c3 9100 00b2 			LDS		R16, CalMode				; If none-zero cal mode, dispatch to correct routine
+0001c5 f0c1      			BREQ	ParseKeyDone
+0001c6 9506      			LSR		R16
+0001c7 9506      			LSR		R16
+0001c8 9506      			LSR		R16
+0001c9 9506      			LSR		R16
+0001ca e0f1      			LDI		ZH, HIGH(CalDispatchTable)
+0001cb eae2      			LDI		ZL, LOW(CalDispatchTable)
+0001cc 1b11      			SUB		R17, R17
+0001cd 0fe0      			ADD		ZL, R16
+0001ce 1ff1      			ADC		ZH, R17
+0001cf 9409      			IJMP
+                 
+                 ParseKeyDispatch:
+0001d0 952a      			DEC		R18							; Generate offset into jump table
+0001d1 0f22      			LSL		R18
+0001d2 e0f1      			LDI		ZH, HIGH(KeyDispatchTable)
+0001d3 e9ed      			LDI		ZL, LOW(KeyDispatchTable)
+0001d4 1b11      			SUB		R17, R17
+0001d5 0fe2      			ADD		ZL, R18
+0001d6 1ff1      			ADC		ZH,	R17
+0001d7 0fee      			LSL		ZL
+0001d8 1fff      			ROL		ZH
+0001d9 91a5      			LPM		XL, Z+
+0001da 91b5      			LPM		XH, Z+
+0001db 2ffb      			MOV		ZH, XH
+0001dc 2fea      			MOV		ZL, XL
+0001dd 9409      			IJMP
+                 
+                 ParseKeyDone:
+0001de 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; The mode button has been pressed
+                 
+                 ModeChange:
+0001df 9100 00b1 			LDS		R16, OpMode					; Increment mode.  
+0001e1 9503      			INC		R16
+0001e2 3002      			CPI		R16, NumCalEntries
+0001e3 f008      			BRLO	ModeChangeSave
+0001e4 1b00      			SUB		R16, R16
+                 
+                 ModeChangeSave:
+0001e5 9300 00b1 			STS		OpMode, R16
+0001e7 e000      			LDI		R16, ModeOffset
+0001e8 e01c      			LDI		R17, ModeLength
+0001e9 d24a      			RCALL	ClearDisplayBuffer			; Clear line 1
+0001ea e0f2      			LDI		ZH, HIGH(Str_Mode)
+0001eb e5e1      			LDI		ZL,	LOW(Str_Mode)
+0001ec d259      			RCALL	WriteCString				; Write "Mode:" to first line
+0001ed 0f00      			LSL		R16
+0001ee 0f00      			LSL		R16
+0001ef 1b11      			SUB		R17, R17
+0001f0 e0f2      			LDI		ZH, HIGH(ModeTableStart)	; Point Z to string defining mode
+0001f1 e3e7      			LDI		ZL, LOW(ModeTableStart)
+0001f2 0fe0      			ADD		ZL, R16
+0001f3 1ff1      			ADC		ZH, R17
+0001f4 0fee      			LSL		ZL
+0001f5 1fff      			ROL		ZH
+0001f6 9105      			LPM		R16, Z+
+0001f7 9115      			LPM		R17, Z+
+0001f8 2ff0      			MOV		ZH, R16
+0001f9 2fe1      			MOV		ZL, R17
+0001fa 9503      			INC		R16
+0001fb d24a      			RCALL	WriteCString				; Write mode to display
+                 
+0001fc e0f0      			LDI		ZH, HIGH(CalTable)			; Load corresponding cal table from EEPROM to RAM
+0001fd e8e4      			LDI		ZL, LOW(CalTable)
+0001fe e056      			LDI		R21, 6						; Six entries to copy
+0001ff eb01      			LDI		R16, OpMode
+000200 e016      			LDI		R17, 6						; Six entries per cal table
+000201 9f01      			MUL		R16, R17					; R16 indexes into EEPROM table
+000202 2d00      			MOV		R16, R0
+                 LoadCalTableLoop:
+000203 d1cf      			RCALL	LoadCalibrationValue
+000204 9503      			INC		R16
+000205 955a      			DEC		R21
+000206 f7e1      			BRNE	LoadCalTableLoop			
+000207 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; The calibration mode button has been pressed
+                 
+                 CalModeChange:
+000208 9100 00b2 			LDS		R16, CalMode				; Increment mode.
+00020a 9503      			INC		R16
+00020b 3004      			CPI		R16, NumCalModes
+00020c f008      			BRLO	CalModeChangeSave
+00020d 1b00      			SUB		R16, R16
+                 CalModeChangeSave:
+00020e 9300 00b2 			STS		CalMode, R16
+000210 2300      			TST		R16							; If active calibration mode, capture keys
+000211 f051      			BREQ	CalModeChangeDisplay		; And flag to initialize cal code
+000212 9100 00b0 			LDS		R16, ProcessStatus
+000214 6001      			ORI		R16, 1<<PS_KEYCAP
+000215 9300 00b0 			STS		ProcessStatus, R16
+000217 e001      			LDI		R16, 1						; Default to middle calibration point
+000218 9300 00b3 			STS		CalPoint, R16				; Main keyboard loop will dispatch to proper routine
+00021a 9300 00b4 			STS		InitCal, R16				; Flag to initialize calibration process
+                 CalModeChangeDisplay:
+00021c e10a      			LDI		R16, FuncOffset				; Clear the function line
+00021d e119      			LDI		R17, FuncLength
+00021e d215      			RCALL	ClearDisplayBuffer
+                 
+00021f 9100 00b2 			LDS		R16, CalMode				; Update the button legends
+000221 2300      			TST		R16
+000222 f099      			BREQ	CalModeChangeDone
+000223 9506      			LSR		R16
+000224 9506      			LSR		R16
+000225 9506      			LSR		R16
+000226 9506      			LSR		R16
+000227 e0d1      			LDI		YH, HIGH(CalDispatchTable)
+000228 eac2      			LDI		YL, LOW(CalDispatchTable)
+000229 1b11      			SUB		R17, R17
+00022a 0fc0      			ADD		YL, R16
+00022b 1fd1      			ADC		YH, R17
+00022c 81e8      			LDD		ZL, Y+0
+00022d 81f9      			LDD		ZH, Y+1
+00022e 9736      			SBIW	ZH:ZL, 6					; Legend table lies 6 bytes below entry point
+00022f e013      			LDI		R17, 3						; Update three button legends...
+000230 e002      			LDI		R16, 2						; ... starting at offset 2
+                 CalModeChangeUpdateLegend:
+000231 d222      			RCALL	WriteButtonLegend
+000232 9632      			ADIW	ZH:ZL, 2
+000233 9503      			INC		R16
+000234 951a      			DEC		R17
+000235 f7d9      			BRNE	CalModeChangeUpdateLegend
+                 CalModeChangeDone:
+000236 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Calibration tables maintained in EEPROM
+                 
+                 			.ESEG
+                 
+                 CalTableStart:
+                 TempCalTable:
+000000 00 f0
+000002 7f c5
+000004 00 00
+000006 c8 c2     			.DD		0xC57FF000,	0xC2C80000		; -4095 -> -100 degrees not avail, but here for table symmetry
+000008 00 00
+00000a 00 00
+00000c 00 00
+00000e 00 00     			.DD		0x00000000,	0x00000000		; 0 -> 0 degrees C
+000010 00 f0
+000012 7f 45
+000014 00 00
+000016 c8 42     			.DD		0x457FF000,	0x42C80000		; 4095 -> 100 degrees C
+                 pHCalTable:
+000018 99 39
+00001a 72 44
+00001c 00 00
+00001e 80 40     			.DD		0x44723999,	0x40800000		; 968.9 -> 	pH 4.0  = .2366V
+000020 66 06
+000022 d4 44
+000024 00 00
+000026 e0 40     			.DD		0x44D40666,	0x40E00000		; 1696.2 -> pH 7.0  = .4141V
+000028 cc 8c
+00002a 17 45
+00002c 00 00
+00002e 20 41     			.DD		0x45178CCC,	0x41200000		; 2424.8 -> pH 10.0 = .5920V
+                 
+                 			; ISE cal tables go here
+                 
+                 CalTableEnd:
+                 
+                 			.EQU	NumCalEntries = (CalTableEnd-CalTableStart)/(phCalTable-TempCalTable)
+                 
+                 FilterConstants:
+000030 10        SignalFilterConstants:	.DB		16
+000031 80        TempFilterConstant:		.DB		128
+000032 20        CalFilterConstant:		.DB		32
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Mode specifiers  and constants stored in program memory
+                 
+                 				.CSEG
+                 
+                 ModeTableStart:
+000237 023f
+000238 0000
+000239 0000
+00023a 0000      				.DW		Str_MV, 0, 0, 0
+                 ModeTableEntryMark:
+00023b 0241
+00023c 0243
+00023d 0245
+00023e 0247      				.DW		Str_pH, Str_4, Str_7, Str_10
+                 ModeTableEnd:
+                 
+00023f 566d
+000240 0020      Str_MV:			.DB		"mV ", 0
+000241 4870
+000242 0020      Str_pH:			.DB		"pH ", 0
+                 
+000243 2e34
+000244 0030      Str_4:			.DB		"4.0", 0
+000245 2e37
+000246 0030      Str_7:			.DB		"7.0", 0
+000247 3031
+000248 302e
+000249 0000      Str_10:			.DB		"10.0", 0, 0
+00024a 2e30
+00024b b030
+00024c 0043      Str_0C:			.DB		"0.0°C", 0
+00024d 3031
+00024e 2e30
+00024f b030
+000250 0043      Str_100C:		.DB		"100.0°C", 0
+                 
+                 
+000251 6f4d
+000252 6564
+000253 203a      Str_Mode:		.DB		"Mode: "				; Terminated by following null string
+000254 0000      Str_Null:		.DB		0, 0
+000255 6143
+000256 696c
+000257 7262
+000258 7461
+000259 2065
+00025a 0000      Str_Cal:		.DB		"Calibrate ", 0, 0
+00025b 4354
+00025c 4d20
+00025d 646f
+00025e 3a65
+00025f 0020      Str_TCMode:		.DB		"TC Mode: ", 0
+000260 7541
+000261 6f74
+000262 0020      Str_Auto:		.DB		"Auto ", 0
+000263 614d
+000264 756e
+000265 6c61
+000266 0020      Str_Manual:		.DB		"Manual ", 0
+000267 6f44
+000268 6e77
+000269 0000      Str_Down:		.DB		"Down", 0, 0
+00026a 7055
+00026b 0000      Str_Up:			.DB		"Up", 0, 0
+00026c 6553
+00026d 006c      Str_Sel:		.DB		"Sel", 0
+00026e 6153
+00026f 6576
+000270 0000      Str_Save:		.DB		"Save", 0, 0
+000271 43b0
+000272 0000      Str_DegC:		.DB		"°C", 0, 0
+000273 46b0
+000274 0000      Str_DegF:		.DB		"°F", 0, 0
+000275 664f
+000276 0066      Str_Off:		.DB		"Off", 0
+                 
+                 ConstantsStart:
+000277 9333 4388 C273:			.DD		0x43889333				; 273.15
+000279 1333 4395 C298:			.DD		0x43951333				; 298.15
+00027b 38e3 3f0e C5over9:		.DD		0x3F0E38E3				; 5/9
+00027d 126f 4083 CA2DMax:		.DD		0x4083126F				; 4.096				A/D scaling
+00027f 0000 0000 C0:				.DD		0x00000000				; 0
+000281 0000 3f80 C1:				.DD		0x3F800000				; 1.0
+000283 0000 3f00 Cp1:			.DD		0x3F000000				; 0.1
+000285 0000 bf00 Cpm1:			.DD		0xBF000000				; -0.1
+000287 0000 4120 C10:			.DD		0x41200000				; 10.0
+000289 0000 4200 C32:			.DD		0x42000000				; 32.0
+                 ConstantsEnd:
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Common way out of most cal routines
+                 
+                 CalRestoreMode:
+00028b 9100 00b0 			LDS		R16, ProcessStatus			; Turn off  key capture
+00028d 7000      			ANDI	R16, !(1<<PS_KEYCAP)
+00028e 9300 00b0 			STS		ProcessStatus, R16
+000290 1b00      			SUB		R16, R16					; Reset cal mode
+000291 9300 00b2 			STS		CalMode, R16
+000293 df51      			RCALL	ModeChangeSave				; Reinitialize for normal operation
+000294 e001      			LDI		R16, 1
+000295 9300 00b4 			STS		InitCal, R16				; Init cal on next calibration
+000297 e10a      			LDI		R16, FuncOffset				; Clear the function line
+000298 e119      			LDI		R17, FuncLength
+000299 d19a      			RCALL	ClearDisplayBuffer
+                 
+                 CalDone:		
+00029a 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Return T bit set if calibration init required
+                 
+                 CheckCalInit:
+00029b 1b11      			SUB		R17, R17
+00029c 9130 00b4 			LDS		R19, InitCal				; Clear calibration init flag, but if set before,
+00029e 9310 00b4 			STS		InitCal, R17				; do the initialization stuff
+0002a0 fb30      			BST		R19, 0						; Set test bit to value of LSB
+0002a1 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Dispatch to the proper destination point specified by the captured key and the jump table @X,
+                 ; or to CalDone if there is no captured key pending.  If CapturedKey is invalid, will jump to destruction.
+                 
+                 DispatchToCalKeyDestination:
+0002a2 9100 00af 			LDS		R16, CapturedKey
+0002a4 1b11      			SUB		R17, R17
+0002a5 9310 00af 			STS		CapturedKey, R17
+0002a7 2300      			TST		R16
+0002a8 f389      			BREQ	CalDone
+0002a9 950a      			DEC		R16
+0002aa 9506      			LSR		R16
+0002ab 9506      			LSR		R16
+0002ac 9506      			LSR		R16
+0002ad 9506      			LSR		R16
+0002ae 1b11      			SUB		R17, R17
+0002af 0fe0      			ADD		ZL, R16
+0002b0 1ff1      			ADC		ZH, R17
+0002b1 9409      			IJMP
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Calibrate current pH/ISE selection
+                 
+                 CalISEpHJumpTable:
+0002b2 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+0002b3 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+0002b4 02de      			.DW		CalISEpHDown				; The "Down" key goes to the next lower cal point.
+0002b5 02e4      			.DW		CalISEpHUp					; The "Up" key goes to the next higher cal point
+0002b6 02d0      			.DW		CalISEpHSaveCal				; The "Enter" key (last chance) saves the cal point
+                 
+                 CalISELegendTable:
+0002b7 0267      			.DW		Str_Down
+0002b8 026a      			.DW		Str_Up
+0002b9 026e      			.DW		Str_Save
+                 
+                 CalISEpH:
+0002ba e0b0      			LDI		XH, HIGH(CalTableStart)		; Initialize X to proper cal table
+0002bb e0a0      			LDI		XL, LOW(CalTableStart)		; Remember ph is mode 1
+0002bc 9100 00b1 			LDS		R16, OpMode
+0002be e118      			LDI		R17, pHCalTable-CalTableStart
+0002bf 9f01      			MUL		R16, R17
+0002c0 0da0      			ADD		XL, R0
+0002c1 1db1      			ADC		XH, R1
+                 
+0002c2 dfd8      			RCALL	CheckCalInit
+0002c3 f44e      			BRTC	CalISEpHCheckKey
+                 
+                 CalISEpHSelect:			
+0002c4 e0d2      			LDI		YH, HIGH(ModeTableStart)	; Point Y to mode table entry
+0002c5 e3c7      			LDI		YL, LOW(ModeTableStart)
+0002c6 9100 00b1 			LDS		R16, OpMode
+0002c8 e014      			LDI		R17, ModeTableEntryMark-ModeTableStart
+0002c9 9f01      			MUL		R16, R17
+0002ca 0fc0      			ADD		YL, R16
+0002cb 1fd1      			ADC		YH, R17
+0002cc d057      			RCALL	InitCalibration
+                 
+                 CalISEpHCheckKey:
+0002cd e0f2      			LDI		ZH, HIGH(CalISEpHJumpTable)
+0002ce ebe2      			LDI		ZL, LOW(CalISEpHJumpTable)
+0002cf cfd2      			RJMP	DispatchToCalKeyDestination
+                 
+                 CalISEpHSaveCal:
+0002d0 9100 00b1 			LDS		R16, OpMode					; Save this calibration point
+0002d2 e01c      			LDI		R17, 12						; Size of cal table entry (3 points)
+0002d3 9f01      			MUL		R16, R17					; R16 is index to base of correct cal table
+0002d4 9110 00b3 			LDS		R17, CalPoint
+0002d6 0f11      			LSL		R17
+0002d7 0f11      			LSL		R17
+0002d8 0f01      			ADD		R16, R17					; R16 indexes correct entry
+0002d9 e0b0      			LDI		XH, HIGH(RawCalSignal)
+0002da eaa5      			LDI		XL, LOW(RawCalSignal)
+0002db 940e 03bc 			CALL	SaveCalibrationValue		; Save in cal table
+0002dd cfbc      			RJMP	CalDone
+                 
+                 CalISEpHDown:									; Go to next lower cal point
+0002de 9100 00b3 			LDS		R16, CalPoint
+0002e0 950a      			DEC		R16
+0002e1 f440      			BRCC	CalISEphPoint
+0002e2 1b00      			SUB		R16, R16
+0002e3 c006      			RJMP	CalISEphPoint
+                 CalISEpHUp:										; Go to next higher cal point
+0002e4 9100 00b3 			LDS		R16, CalPoint
+0002e6 9503      			INC		R16
+0002e7 3003      			CPI		R16, 3
+0002e8 f008      			BRLO	CalISEphPoint
+0002e9 e002      			LDI		R16, 2
+                 CalISEphPoint:
+0002ea 9300 00b3 			STS		CalPoint, R16				; Either way, save new value and re-initialize
+0002ec cfd7      			RJMP	CalISEpHSelect
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Calibrate temperature probe
+                 
+                 CalTempJumpTable:
+0002ed 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+0002ee 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+0002ef 0315      			.DW		CalTempDown					; The "Down" key goes to the next lower cal point.
+0002f0 031b      			.DW		CalTempUp					; The "Up" key goes to the next higher cal point
+0002f1 030a      			.DW		CalTempSave					; The "Enter" key (last chance) saves the cal point
+                 
+                 CalTempLegendTable:
+0002f2 0267      			.DW		Str_Down
+0002f3 026a      			.DW		Str_Up
+0002f4 026e      			.DW		Str_Save
+                 CalTemp:
+0002f5 e0b0      			LDI		XH, HIGH(CalTableStart)		; Initialize X to proper cal table
+0002f6 e0a0      			LDI		XL, LOW(CalTableStart)		; Remember Temperature is equiv. to mode 0
+0002f7 dfa3      			RCALL	CheckCalInit
+0002f8 f476      			BRTC	CalTempCheckKey
+                 
+                 CalTempSelect:
+0002f9 e0f2      			LDI		ZH, HIGH(Str_Cal)			; First line to say something like 
+0002fa e5f5      			LDI		ZH, LOW(Str_Cal)			; "Calibrate 0°C"
+0002fb 1b00      			SUB		R16, R16
+0002fc d149      			RCALL	WriteCString				; "Calibrate"
+0002fd 9503      			INC		R16							; Space
+0002fe e0f2      			LDI		ZH, HIGH(Str_100C)
+0002ff e4ed      			LDI		ZL, LOW(Str_100C)
+000300 9110 00b3 			LDS		R17, CalPoint
+000302 3012      			CPI		R17, 2
+000303 f011      			BREQ	CalTempShowPoint
+000304 e0f2      			LDI		ZH, HIGH(Str_0C)
+000305 e4ea      			LDI		ZL, LOW(Str_0C)
+                 CalTempShowPoint:
+000306 d13f      			RCALL	WriteCString				; Calibration point
+                 
+                 CalTempCheckKey:
+000307 e0b2      			LDI		XH, HIGH(CalTempJumpTable)
+000308 eead      			LDI		XL, LOW(CalTempJumpTable)
+000309 cf98      			RJMP	DispatchToCalKeyDestination
+                 
+                 CalTempSave:
+00030a e002      			LDI		R16, 2						; Assume 0 deg point
+00030b 9110 00b3 			LDS		R17, CalPoint
+00030d 3011      			CPI		R17, 1
+00030e f009      			BREQ	CalTempSave2
+00030f e004      			LDI		R16, 4						; Else, 100 deg point
+                 CalTempSave2:
+000310 e0b0      			LDI		XH, HIGH(TemperatureFilter+FilterFloat)
+000311 e7a4      			LDI		XL, LOW(TemperatureFilter+FilterFloat)
+000312 940e 03bc 			CALL	SaveCalibrationValue		; Save in cal table
+000314 cf85      			RJMP	CalDone
+                 
+                 CalTempDown:									; Go to next lower cal point
+000315 9100 00b3 			LDS		R16, CalPoint
+000317 950a      			DEC		R16
+000318 f441      			BRNE	CalTempPoint
+000319 e001      			LDI		R16, 1
+00031a c006      			RJMP	CalTempPoint
+                 CalTempUp:										; Go to next higher cal point
+00031b 9100 00b3 			LDS		R16, CalPoint
+00031d 9503      			INC		R16
+00031e 3003      			CPI		R16, 3
+00031f f008      			BRLO	CalTempPoint
+000320 e002      			LDI		R16, 2
+                 CalTempPoint:
+000321 9300 00b3 			STS		CalPoint, R16				; Either way, save new value and re-initialize
+000323 cfd5      			RJMP	CalTempSelect
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Initialize calibration for selected pH/ISE
+                 
+                 InitCalibration:
+000324 e0f2      			LDI		ZH, HIGH(Str_Cal)			; First line to say something like 
+000325 e5f5      			LDI		ZH, LOW(Str_Cal)			; "Calibrate pH 4.0" depending on ion and cal point
+000326 1b00      			SUB		R16, R16
+000327 d11e      			RCALL	WriteCString				; "Calibrate"
+000328 9503      			INC		R16							; Space
+000329 81e8      			LDD		ZL, Y+0
+00032a 81f8      			LDD		ZH, Y+0
+00032b d11a      			RCALL	WriteCString				; Ion name
+00032c 9503      			INC		R16							; Space
+00032d 9110 00b3 			LDS		R17, CalPoint
+00032f 9513      			INC		R17
+000330 0f11      			LSL		R17
+000331 1b22      			SUB		R18, R18
+000332 0fe1      			ADD		ZL, R17
+000333 1ff2      			ADC		ZH, R18
+000334 d111      			RCALL	WriteCString				; Calibration point
+000335 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Set manual or automatic temperature compensation, and if manual, the temperature
+                 
+                 SetTempModeJumpTable:
+000336 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+000337 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+000338 0353      			.DW		SetTempDown					; The "Down" key decreases temperature
+000339 0356      			.DW		SetTempUp					; The "Up" key increases temperature
+00033a 035f      			.DW		SetTempSwitchMode			; The "Enter" key changes mode
+                 
+                 SetTempModeLegendTable:
+00033b 0271      			.DW		Str_DegC
+00033c 0273      			.DW		Str_DegF
+00033d 0254      			.DW		Str_Null
+                 
+                 SetTempMode:
+00033e df5c      			RCALL	CheckCalInit
+00033f f486      			BRTC	SetTempModeCheckKey
+                 
+000340 1b00      			SUB		R16, R16
+000341 9300 00b3 			STS		CalPoint, R16				; 0 -> manual auto not chosen
+                 SetTempModeStart:
+000343 1b00      			SUB		R16, R16
+000344 e0f2      			LDI		ZH, HIGH(Str_TCMode)
+000345 e5eb      			LDI		ZL, LOW(Str_TCMode)			; "TC Mode: "
+000346 d0ff      			RCALL	WriteCString
+000347 e0f2      			LDI		ZH, HIGH(Str_Auto)
+000348 e6e0      			LDI		ZL, LOW(Str_Auto)
+000349 9140 00b0 			LDS		R20, ProcessStatus
+00034b fb43      			BST		R20, PS_MANTEMP
+00034c f416      			BRTC	SetTempModeDisplay
+00034d e0f2      			LDI		ZH, HIGH(Str_Manual)
+00034e e6e3      			LDI		ZL, LOW(Str_Manual)
+                 SetTempModeDisplay:
+00034f d0f6      			RCALL	WriteCString
+                 
+                 SetTempModeCheckKey:
+000350 e0b3      			LDI		XH, HIGH(SetTempModeJumpTable)
+000351 e3a6      			LDI		XL, LOW(SetTempModeJumpTable)
+000352 cf4f      			RJMP	DispatchToCalKeyDestination
+                 
+                 SetTempDown:
+000353 e0b2      			LDI		XH, HIGH(Cpm1)
+000354 e8a5      			LDI		XL, LOW(Cpm1)
+000355 c002      			RJMP	SetTempAdj
+                 
+                 SetTempUp:
+000356 e0b2      			LDI		XH, HIGH(Cp1)
+000357 e8a3      			LDI		XL, LOW(Cp1)
+                 SetTempAdj:
+000358 e0f0      			LDI		ZH, HIGH(TempComp)
+000359 eae9      			LDI		ZL, LOW(TempComp)
+00035a d2ce      			RCALL	FSRAMA1
+00035b 2ffb      			MOV		ZH, XH
+00035c 2fea      			MOV		ZL, XL
+00035d d117      			RCALL	FADDROM
+00035e cf3b      			RJMP	CalDone
+                 
+                 SetTempSwitchMode:
+00035f e038      			LDI		R19, 1<<PS_MANTEMP
+000360 2743      			EOR		R20, R19
+000361 9340 00b0 			STS		ProcessStatus, R20
+000363 cfdf      			RJMP	SetTempModeStart
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Set temperature to read in C or F
+                 
+                 SetTempDisplayJumpTable:
+000364 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+000365 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+000366 036f      			.DW		SetDisplayC					; The "Down" key sets to °C
+000367 0373      			.DW		SetDisplayF					; The "Up" key sets to °F
+000368 029a      			.DW		CalDone						; The "Enter" key does nothing
+                 
+                 SetTempDisplayLegendTable:
+000369 0271      			.DW		Str_DegC
+00036a 0273      			.DW		Str_DegF
+00036b 0254      			.DW		Str_Null
+                 
+                 SetTempDisplay:
+00036c e0b3      			LDI		XH, HIGH(SetTempDisplayJumpTable)
+00036d e6a4      			LDI		XL, LOW(SetTempDisplayJumpTable)
+00036e cf33      			RJMP	DispatchToCalKeyDestination
+                 
+                 SetDisplayC:
+00036f 1b00      			SUB		R16, R16
+000370 9300 009c 			STS		DegF, R16
+000372 cf27      			RJMP	CalDone
+                 
+                 SetDisplayF:
+000373 e001      			LDI		R16, 1
+000374 9300 009c 			STS		DegF, R16
+000376 cf23      			RJMP	CalDone
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Set report interval. 0 = off.
+                 
+                 SetReportIntervalJumpTable:
+000377 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+000378 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+000379 0382      			.DW		SetIntervalDown				; The "Down" key decreases the interval
+00037a 038e      			.DW		SetIntervalUp				; The "Up" increases the interval
+00037b 039a      			.DW		SetIntervalOff				; The "Enter" Turns interval off
+                 
+                 SetReportIntervalLegendTable:
+00037c 0267      			.DW		Str_Down
+00037d 026a      			.DW		Str_Up
+00037e 0275      			.DW		Str_Off
+                 
+                 SetReportInterval:
+00037f e0b3      			LDI		XH, HIGH(SetReportIntervalJumpTable)
+000380 e7a7      			LDI		XL, LOW(SetReportIntervalJumpTable)
+000381 cf20      			RJMP	DispatchToCalKeyDestination
+                 
+                 SetIntervalDown:
+000382 9100 00ad 			LDS		R16, ReportInterval
+000384 2300      			TST		R16							; Can't go below zero
+000385 f0b9      			BREQ	SetIntervalDone
+000386 e011      			LDI		R17, 1						; Ten or lower, decrement by one
+000387 300b      			CPI		R16, 11		
+000388 f008      			BRLO	SetIntervalDown2
+000389 e015      			LDI		R17, 5						; else decrement by 5
+                 SetIntervalDown2:
+00038a 1b01      			SUB		R16, R17
+00038b 9300 00ad 			STS		ReportInterval, R16
+00038d cf0c      			RJMP	CalDone
+                 
+                 SetIntervalUp:
+00038e 9100 00ad 			LDS		R16, ReportInterval
+000390 2300      			TST		R16							; Can't go below zero
+000391 f059      			BREQ	SetIntervalDone
+000392 e015      			LDI		R17, 5						; Ten or higher, increment by 5
+000393 300a      			CPI		R16, 10		
+000394 f40c      			BRGE	SetIntervalUp2
+000395 e011      			LDI		R17, 1						; else increment by 1
+                 SetIntervalUp2:
+000396 1b01      			SUB		R16, R17
+000397 9300 00ad 			STS		ReportInterval, R16
+000399 cf00      			RJMP	CalDone
+                 
+                 SetIntervalOff:
+00039a 1b00      			SUB		R16, R16
+00039b 9300 00ad 			STS		ReportInterval, R16
+                 SetIntervalDone:
+00039d cefc      			RJMP	CalDone
+                 
+                 		
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Set clock
+                 
+                 			.DSEG
+0000b5 00        ClkSetDigit:.DB		0							; Index int H:M:S D:M:YYYY
+0000b6 00        CSHours:	.DB		0							; BCD
+0000b7 00        CSMinutes:	.DB		0
+0000b8 00        CSSeconds:	.DB		0
+0000b9 00        CSDay:		.DB		0
+0000ba 00        CSMonth:	.DB		0
+0000bb 00        CSYear1000:	.DB		0
+0000bc 00        CSYear100:	.DB		0
+0000bd 00        CSYear10:	.DB		0
+0000be 00        CSYear1:	.DB		0
+                 
+                 			.CSEG
+                 
+                 SetClockJumpTable:
+00039e 028b      			.DW		CalRestoreMode				; The "Mode" key aborts cal and puts us back where we were
+00039f 029a      			.DW		CalDone						; The "Cal" key does nothing right now
+0003a0 03ab      			.DW		SetClockDown				; The "Down" key goes to previous item
+0003a1 03b1      			.DW		SetClockUp					; The "Up" key goes to next item
+0003a2 03b9      			.DW		SetClockIncr				; The "Enter" increments chosen value
+                 
+                 SetClockLegendTable:
+0003a3 0271      			.DW		Str_DegC
+0003a4 0273      			.DW		Str_DegF
+0003a5 0254      			.DW		Str_Null
+                 
+                 SetClock:
+0003a6 def4      			RCALL	CheckCalInit
+0003a7 f406      			BRTC	SetClockCheckKey
+                 SetClockFormatDisplay:
+                 
+                 
+                 SetClockCheckKey:
+0003a8 e0b3      			LDI		XH, HIGH(SetClockJumpTable)
+0003a9 e9ae      			LDI		XL, LOW(SetClockJumpTable)
+0003aa cef7      			RJMP	DispatchToCalKeyDestination
+                 
+                 SetClockDown:
+0003ab 9100 00b5 			LDS		R16, ClkSetDigit
+0003ad 950a      			DEC		R16
+0003ae f060      			BRCS	SetClockDone
+0003af 1b00      			SUB		R16, R16
+0003b0 c005      			RJMP	SetClockNew
+                 
+                 SetClockUp:
+0003b1 9100 00b5 			LDS		R16, ClkSetDigit
+0003b3 3008      			CPI		R16, 8
+0003b4 f434      			BRGE	SetClockDone
+0003b5 9503      			INC		R16
+                 SetClockNew:
+0003b6 9300 00b5 			STS		ClkSetDigit, R16
+0003b8 cfef      			RJMP	SetClockFormatDisplay
+                 
+                 SetClockIncr:
+0003b9 9100 00b5 			LDS		R16, ClkSetDigit
+                 
+                 SetClockDone:
+0003bb cede      			RJMP	CalDone
+                 
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Save calibration value, X->source, R16 = destination index.
+                 
+                 SaveCalibrationValue:
+0003bc e014      			LDI		R17, 4
+0003bd 2f30      			MOV		R19, R16					; Generate EEPROM address
+0003be 1b44      			SUB		R20, R20
+0003bf 0f33      			LSL		R19
+0003c0 1f44      			ROL		R20
+0003c1 0f33      			LSL		R19
+0003c2 1f44      			ROL		R20
+0003c3 1800      			SUB		R0, R0
+                 SaveCalValLoop:
+0003c4 912d      			LD		R18, X+
+0003c5 d005      			RCALL	WriteEEPROM
+0003c6 9533      			INC		R19
+0003c7 1d40      			ADC		R20, R0
+0003c8 951a      			DEC		R17
+0003c9 f7d1      			BRNE	SaveCalValLoop
+0003ca 9508      			RET
+                 
+                 			; Write byte in R18 to EEPROM address R20:R19
+                 
+                 WriteEEPROM:					
+0003cb 99e1      			SBIC	EECR, EEWE					; Wait for completion of previous write
+0003cc cffe      			RJMP	WriteEEPROM
+0003cd bb4f      			OUT		EEARH, R20
+0003ce bb3e      			OUT		EEARL, R19
+0003cf bb2d      			OUT		EEDR, R18
+0003d0 9ae2      			SBI		EECR, EEMWE					; Write logical one to EEMWE
+0003d1 9ae1      			SBI		EECR, EEWE					; Start eeprom write by setting EEWE
+0003d2 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Load calibration value, R16 = source index. Z->destination
+                 
+                 LoadCalibrationValue:
+0003d3 e014      			LDI		R17, 4						; Move 4 bytes (one float)
+0003d4 2f30      			MOV		R19, R16					; Generate EEPROM address
+0003d5 1b44      			SUB		R20, R20
+0003d6 0f33      			LSL		R19
+0003d7 1f44      			ROL		R20
+0003d8 0f33      			LSL		R19
+0003d9 1f44      			ROL		R20
+0003da 1800      			SUB		R0, R0
+                 LoadCalValLoop:
+0003db d006      			RCALL	ReadEEPROM
+0003dc 9321      			ST		Z+, R18
+0003dd 9533      			INC		R19
+0003de 1d40      			ADC		R20, R0
+0003df 951a      			DEC		R17
+0003e0 f7d1      			BRNE	LoadCalValLoop
+0003e1 9508      			RET
+                 
+                 			; Read byte in EEPROM address R20:R19 to R18
+                 
+                 ReadEEPROM:					
+0003e2 99e1      			SBIC	EECR, EEWE					; Wait for completion of any previous write
+0003e3 cffe      			RJMP	ReadEEPROM
+0003e4 bb3e      			OUT		EEARL, R19
+0003e5 bb4f      			OUT		EEARH, R20
+0003e6 9ae0      			SBI		EECR, EERE					; Start eeprom read by setting EERE
+0003e7 b32d      			IN		R18, EEDR
+0003e8 98e0      			CBI		EECR, EERE
+0003e9 9508      			RET
+                 
+                 ;=================================================================================================
+                 ; Output information to the real world
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Format floating to string as 3.2.  Minus sign may take first position before decimal
+                 ; Z->source, Y->SRAM destination
+                 
+                 Write3Point2:
+0003ea 93df      			PUSH	YH
+0003eb 93cf      			PUSH	YL
+0003ec d23c      			RCALL	FSRAMA1
+0003ed fb07      			BST		expnt1, 7
+0003ee f42e      			BRTC	WritePositive
+                 
+0003ef e20d      			LDI		R16, '-'					; Minus sign for negative numbers
+0003f0 9309      			ST		Y+, R16	
+0003f1 941a      			DEC		R1							; That leaves two slots for digits
+0003f2 e890      			LDI		R25, 0x80
+0003f3 2709      			EOR		expnt1, R25					; Make positive
+                 
+                 WritePositive:
+0003f4 1822      			SUB		R2, R2						; Count the number of divisions by 10 to bring number below one
+                 CountIntegerDigits:
+0003f5 e0f2      			LDI		ZH, HIGH(C1)
+0003f6 e8e1      			LDI		ZL, LOW(C1)
+0003f7 d1ea      			RCALL	FLTCPMEM
+0003f8 f024      			BRLT	IntegerDigitCountKnown
+0003f9 e0f2      			LDI		ZH, HIGH(C10)
+0003fa e8e7      			LDI		ZL, LOW(C10)
+0003fb d15b      			RCALL	FDIVMEM
+0003fc cff8      			RJMP	CountIntegerDigits
+                 
+                 IntegerDigitCountKnown:
+0003fd e340      			LDI		R20, '0'
+0003fe 2e44      			MOV		R4, R20
+0003ff ef4f      			LDI		R20, 255
+000400 2e54      			MOV		R5, R20						; Digits right of decimal
+000401 1812      			SUB		R1, R2						; If more digits than will fit, overflow
+000402 f13c      			BRLT	WriteOverflow
+                 IntegerDigitCountOK:
+000403 f021      			BREQ	ExtractNextDigit
+                 WriteLeadingSpace:
+000404 e240      			LDI		R20, ' '					; R1 has number of leading spaces
+000405 9349      			ST		Y+, R20
+000406 941a      			DEC		R1
+000407 f7e1      			BRNE	WriteLeadingSpace
+                 			
+                 ExtractNextDigit:								; Successively multipy by 10 to get peel off digits
+000408 2022      			AND		R2, R2						; R2 is number of positions before decimal point
+000409 f421      			BRNE	ExtractNextDigit2
+00040a e24e      			LDI		R20, '.'
+00040b 9349      			ST		Y+, R20
+00040c e042      			LDI		R20, 2						; 2 decimal digits
+00040d 2e54      			MOV		R5, R20
+                 
+                 ExtractNextDigit2:
+00040e e0f2      			LDI		ZH, HIGH(C10)
+00040f e8e7      			LDI		ZL, LOW(C10)
+000410 d173      			RCALL	FMULMEM
+000411 d221      			RCALL	AC1TOAC2					; Save in AC2
+000412 d0a3      			RCALL	FTOI						; Convert to integer; fractional part discarded
+000413 e0f0      			LDI		ZH, HIGH(ITemp)
+000414 eae0      			LDI		ZL, LOW(ITemp)
+000415 d05a      			RCALL	MSave1ToMem					; Save integer part
+000416 0d04      			ADD		R16, R4						; Convert to ascii.  0 <= R16 <=9
+000417 9319      			ST		Y+, R17
+000418 d1f8      			RCALL	ITOFMEM						; Integer to float
+000419 e0f0      			LDI		ZH, HIGH(ITemp)
+00041a eae0      			LDI		ZL, LOW(ITemp)
+00041b d054      			RCALL	MSave1ToMem
+00041c d21c      			RCALL	SWAPACC
+00041d d0b3      			RCALL	FSUBMEM						; Leftmost digit stripped off
+                 
+00041e 945a      			DEC		R5
+00041f f011      			BREQ	CleanUpFormat
+000420 942a      			DEC		R2
+000421 cfe6      			RJMP	ExtractNextDigit
+                 
+                 CleanUpFormat:									; If there is no digit before the decimal,
+000422 91cf      			POP		YL							; put a zero there
+000423 91df      			POP		YH
+000424 9622      			ADIW	YH:YL, 2
+000425 8108      			LD		R16, Y
+000426 3200      			CPI		R16, ' '
+000427 f449      			BRNE	WriteFormatDone
+000428 8248      			ST		Y, R4
+000429 c007      			RJMP	WriteFormatDone
+                 
+                 WriteOverflow:
+00042a e005      			LDI		R16, 5
+00042b e21a      			LDI		R17, '*'
+                 WriteOverflowLoop:
+00042c 9319      			ST		Y+, R17
+00042d 950a      			DEC		R16
+00042e f7e9      			BRNE	WriteOverflowLoop
+00042f 91cf      			POP		YL
+000430 91cf      			POP		YL
+                 			
+                 WriteFormatDone:
+000431 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Analog output for recorder
+                 
+                 RecorderOutput:
+                 
+000432 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Transfer RAM buffers to physical display
+                 
+                 UpdateDisplay:
+000433 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Clear the display from R16 offset for R17 characters
+                 
+                 ClearDisplayBuffer:
+000434 2311      			TST		R17
+000435 f049      			BREQ	ClearDisplayDone
+000436 e0d0      			LDI		YH, HIGH(LineBuffer)
+000437 ebcf      			LDI		YL, LOW(LineBuffer)
+000438 1b22      			SUB		R18, R18
+000439 0fc0      			ADD		YL, R16
+00043a 1fd2      			ADC		YH, R18
+00043b e220      			LDI		R18, ' '
+                 ClearDisplayChar:
+00043c 9329      			ST		Y+, R18
+00043d 951a      			DEC		R17
+00043e f7e9      			BRNE	ClearDisplayChar
+                 ClearDisplayDone:
+00043f 9508      			RET
+                 
+                 ;------------------------------------------------------------------------------------------------
+                 ; Move 4 bytes from Z to Y
+                 
+                 Move4ZtoY:
+000440 e014      			LDI		R17, 4
+                 Move4ZtoYLoop:
+000441 9001      			LD		R0, Z+
+000442 9209      			ST		Y+, R0
+000443 951a      			DEC		R17
+000444 f7e1      			BRNE	Move4ZtoYLoop
+000445 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Write a cstring in Program Memory at Z to display memory offset R16.  We trust the line is not too long
+                 
+                 WriteCString:
+000446 0fee      			LSL		ZL						; Convert word addressing to byte addressing
+000447 1fff      			ROL		ZH
+000448 e0d0      			LDI		YH, HIGH(LineBuffer)
+000449 ebcf      			LDI		YL, LOW(LineBuffer)
+00044a 1b11      			SUB		R17, R17
+00044b 0fc0      			ADD		YL, R16
+00044c 1fd1      			ADC		YH, R17
+                 WriteCStringChar:
+00044d 9115      			LPM		R17, Z+
+00044e 2311      			TST		R17
+00044f f019      			BREQ	WriteCStringDone
+000450 9319      			ST		Y+, R17
+000451 9503      			INC		R16						; Save index for sequential text writes.
+000452 cffa      			RJMP	WriteCStringChar
+                 WriteCStringDone:
+000453 9508      			RET
+                 
+                 ;-------------------------------------------------------------------------------------------------
+                 ; Write a button legend @Z to button index R16.  Preserve R16, R17, and ZH:ZL
+                 
+                 WriteButtonLegend:
+000454 2e20      			MOV		R2, R16					; Saves stack space over push/pop
+000455 2e31      			MOV		R3, R17
+000456 2e4e      			MOV		R4, ZL
+000457 2e5f      			MOV		R5, ZH
+000458 e015      			LDI		R17, 5
+000459 9f01      			MUL		R16, R17
+00045a e0d0      			LDI		YH, HIGH(LegendBuf)
+00045b efcb      			LDI		YL, LOW(LegendBuf)
+00045c 0dc0      			ADD		YL, R0
+00045d 1dc1      			ADC		YL, R1
+00045e e015      			LDI		R17, 5					; Legend width.
+                 WriteButtonLegendLoop:
+00045f 9061      			LD		R6, Z+
+000460 2066      			TST		R6
+000461 f019      			BREQ	WriteButtonLegendEnd
+000462 9269      			ST		Y+, R6					; Copy each character
+000463 951a      			DEC		R17
+000464 f7d1      			BRNE	WriteButtonLegendLoop
+                 WriteButtonLegendEnd:
+000465 2311      			TST		R17						; If we have written less than 5 chars,
+000466 f021      			BREQ	WriteButtonLegendDone	; pad rest with spaces
+000467 e200      			LDI		R16, ' '
+                 WriteButtonLegendPad:
+000468 9309      			ST		Y+, R16
+000469 951a      			DEC		R17
+00046a f7e9      			BRNE	WriteButtonLegendPad
+                 WriteButtonLegendDone:
+00046b 2df5      			MOV		ZH, R5
+00046c 2de4      			MOV		ZL, R4
+00046d 2d13      			MOV		R17, R3
+00046e 2d02      			MOV		R16, R2
+00046f 9508      			RET
+                 
+                 			.DSEG
+                 
+0000bf           LineBuffer:	.BYTE		52					; Top 2 lines of display
+0000f3           ReadoutBuf:	.BYTE		8					; Large font readout
+0000fb           LegendBuf:	.BYTE		25					; Buffer for button legends at bottom
+                 
+                 			; Define offsets into buffers
+                 
+                 			.EQU		ModeOffset = 0;
+                 			.EQU		TempOffset = 12;
+                 			.EQU		TimeOffset = 20
+                 			.EQU		FuncOffset = 26
+                 
+                 			.EQU		ModeLength = TempOffset-ModeOffset
+                 			.EQU		TempLength = TimeOffset-TempOffset
+                 			.EQU		TimeLength = 5
+                 			.EQU		FuncLength = 25
+                 
+                 			.CSEG
+                 ;=================================================================================================
+                 ; Math helper routines. Things that should have been in JT's math library
+                 
+                 ; Save Acc1 to memory
+                 
+                 MSave1ToMem:
+000470 82d0      			STD		Z+0, MANT1
+000471 82e1      			STD		Z+1, MANT1M
+000472 82f2      			STD		Z+2, MANT1H
+000473 8303      			STD		Z+3, EXPNT1
+000474 9508      			RET
+                 
+                 FADDROM:
+                 FMULROM:	
+000475 9508      FDIVROM:	RET
+                 
+                 
+                 
+                 			.INCLUDE "jtmath.asm"			; Floating-point math library
+                 
+                 ; ** 1998,1999 by Jack Tidwell <jackt@igalaxy.net> **
+                 ; ** These routines may be used for personal and educational
+                 ; **      purposes, and are free to download. **
+                 ; ** Work is still in progress (smaller & FASTER!) **
+                 ; ** Trig funcs comming soon **
+                 ; ** I would like feedback. **
+                 
+                 ; ** Most problems fixed, converting to Decimal seems to be
+                 ;    the only one left?
+                 ; ** Added some 'C' support **
+                 ; ** Work on preservation of r9 to r25 is needed **
+                 
+                 ; NOTE: All funcs w/xxxMEM: i.e; FDIVMEM:
+                 ; enter w/r30,r31 as a pointer to 32bit SRAM FPvalue.
+                 ; You still have to preserv r9-r25
+                 ; It's a start toward Rons' SmallC.
+                 
+                 //.include "8535def.inc"; (Any AVR except 1200)
+                 
+                 .def QUOT =r9; partial product scratch area
+                 .def QUOTM =r10
+                 .def QUOTH =r11
+                 
+                 .def DEXP =r12; Decimal Exp for 'ftoa(), ecvt()' funcs
+                 
+                 .def MANT1 =r13; Accumulator 1
+                 .def MANT1m =r14
+                 .def MANT1h =r15
+                 .def EXPNT1 =r16
+                 .def SIGN1 =r17
+                 
+                 .def MANT2 =r18; Accumulator 2
+                 .def MANT2m =r19
+                 .def MANT2h =r20
+                 .def EXPNT2 =r21
+                 .def SIGN2 =r22
+                 
+                 .def MANT1T =r23; used to extend 24bit to 32bit ops
+                 .def count =r24; GP loop counter
+                 .def temp =r25; scratch 'ram'?
+                 
+                 .dseg
+                 
+000114           DECBUFF: .byte 10; some place to hold Decimal Digits
+                 
+00011e           MATHTMP: .byte 8; Accumulator 'Holding' registers.
+                 
+                 .cseg
+                 
+                 ;
+                 ;**************************************************************************
+                 ;**** FP Math Routines: ****
+                 ; ** Very similar to _ecvt(), (still a little buggy?) **
+                 FLTDEC:
+000476 d1e7      		RCALL	Push1
+000477 931f      		PUSH	sign1
+000478 930f      		PUSH	EXPNT1 								; FP to 7 digit dec # +exp
+000479 2300      		TST		EXPNT1
+00047a f40a      		BRPL	FLTD1
+00047b d0a3      		RCALL	FLTNEG
+                 FLTD1:
+00047c e79f      		LDI		temp,0x7f
+00047d 1b90      		SUB		temp,EXPNT1
+00047e 2ec9      		MOV		DEXP,temp
+                 FLTD2:
+00047f e7e0      		LDI		ZL, LOW(k1E8 *2)
+000480 e0fd      		LDI		ZH, HIGH(k1E8 *2)
+000481 d1d3      rcall KTOAC2
+000482 d160      rcall FLTCP
+000483 f432      brpl FLTD5
+000484 e6e8      ldi zl,low(k10*2)
+000485 e0fd      ldi zh,high(k10*2)
+000486 d1ce      rcall KTOAC2
+000487 d102      rcall FMULT
+000488 94c3      inc DEXP
+000489 cff5      rjmp FLTD2
+00048a 919f      FLTD5: pop temp; orig EXPNT1
+00048b 2f89      mov count,temp
+00048c 9591      neg temp
+00048d 0d9c      add temp,DEXP
+00048e 579f      subi temp,0x7f
+00048f 2ec9      mov DEXP,temp
+000490 7880      andi count,0x80
+000491 d049      rcall FADDp5
+000492 911f      pop sign1
+000493 d022      ITOD: rcall FTOI
+000494 e1c4      ldi yl,low(DECBUFF)
+000495 e0d1      ldi yh,high(DECBUFF)
+000496 2311      tst sign1
+000497 f41a      brpl ITOD1
+000498 e29d      ldi temp,'-'
+000499 9399      st y+,temp
+00049a d084      rcall FLTNEG
+00049b e4e0      ITOD1: ldi zl,low(I1E6*2); decimal 'lookup' table
+00049c e0fd      ldi zh,high(I1E6*2)
+00049d e086      ldi count,6
+00049e 938f      ITODLP: push count
+00049f d1b5      rcall KTOAC2
+0004a0 2799      clr temp
+0004a1 16d2      ITOD2: cp mant1,mant2
+0004a2 06e3      cpc mant1m,mant2m
+0004a3 06f4      cpc mant1h,mant2h
+0004a4 f028      brlo ITOD3
+0004a5 1ad2      sub mant1,mant2
+0004a6 0ae3      sbc mant1m,mant2m
+0004a7 0af4      sbc mant1h,mant2h
+0004a8 9593      inc temp
+0004a9 f7b9      brne ITOD2
+0004aa 6390      ITOD3: ori temp,'0'; convert to Ascii char
+0004ab 9399      st y+,temp ; store the dig in the SRAM Buffer, and post-inc 'y' reg
+0004ac 918f      pop count
+0004ad 958a      dec count ; have we processed all tables yet?
+0004ae f779      brne ITODLP
+0004af 2d9d      mov temp,mant1
+0004b0 6390      ori temp,'0'
+0004b1 9399      st y+,temp
+                 ; * count = 0 here, use it to add ending 'NULL' char. *
+0004b2 9389      st y+,count
+                 ; * DEXP has dp position -1 *
+0004b3 92c9      st y+,DEXP
+0004b4 c1b2      rjmp POP1 ; restore ac1
+                 ;
+0004b5 d173      FTOIMEM: rcall FSRAMA1
+0004b6 d1cb      FTOI: rcall UNPACK
+0004b7 f409      brne FTOI1
+0004b8 c0c5      rjmp MINRES
+0004b9 e196      FTOI1: ldi temp,22
+0004ba 1b90      sub temp,EXPNT1
+0004bb f40a      brpl FTOI2
+0004bc c0ba      rjmp MAXRES
+0004bd 3198      FTOI2: cpi temp,24
+0004be f008      brlo FTOI3
+0004bf c0be      rjmp MINRES
+0004c0 3098      FTOI3: cpi temp,8; use fast byte-move, if possible
+0004c1 f030      brlo FTOI4
+0004c2 2cde      mov mant1,mant1m
+0004c3 2cef      mov mant1m,mant1h
+0004c4 2cf9      mov mant1h,quot
+0004c5 2499      clr quot
+0004c6 5098      subi temp,8
+0004c7 cff8      rjmp FTOI3
+0004c8 2399      FTOI4: tst temp
+0004c9 f031      breq FTOI6
+0004ca 9496      FTOI5: lsr quot
+0004cb 94f7      ror mant1h
+0004cc 94e7      ror mant1m
+0004cd 94d7      ror mant1
+0004ce 959a      dec temp
+0004cf f7d1      brne FTOI5
+                 FTOI6:
+                 ; tst sign1
+                 ; brpl FTOIX
+                 ; rjmp NEGMANT
+0004d0 9508      FTOIX: ret
+                 ;
+                 ;** ACC1 -= *r30 **
+0004d1 d15c      FSUBMEM: rcall FSRAMA2; Acc1 -= *r30
+                 ;** ACC1 -= ACC2 **
+0004d2 d1af      FSUB: rcall UNPACK
+0004d3 3850      cpi EXPNT2,0x80
+0004d4 f029      breq FSADX
+0004d5 e890      ldi temp,0x80
+0004d6 2769      eor sign2,temp
+0004d7 c00c      rjmp FADD1
+0004d8 f00a      FSUNDER: brmi FSADX
+0004d9 d15f      FRET2: rcall SWAPACC
+0004da c1bb      FSADX: rjmp REPACK
+                 ;** ACC1 += 0.5f **
+0004db e35f      FADDp5: ldi EXPNT2,0x3f
+0004dc 2722      clr mant2
+0004dd 2733      clr mant2m
+0004de 2744      clr mant2h
+0004df c001      rjmp FADD
+0004e0 d14d      FADDMEM: rcall FSRAMA2; Acc1 += *r30
+                 ;** ACC1 += ACC2 **
+0004e1 d1a0      FADD: rcall UNPACK
+0004e2 3850      cpi EXPNT2,0x80
+0004e3 f3b1      breq FSADX
+0004e4 3800      FADD1: cpi EXPNT1,0x80
+0004e5 f399      breq FRET2
+0004e6 2f90      FADD2: mov temp,EXPNT1
+0004e7 1b95      sub temp,EXPNT2
+0004e8 f38b      brvs FSADX
+0004e9 f412      brpl FADD3
+0004ea d14e      rcall SWAPACC
+0004eb cffa      rjmp FADD2
+0004ec 3198      FADD3: cpi temp,24; are we more than 24 bits diff?
+0004ed f018      brlo FADD3a; no, we can add it.
+0004ee 2722      clr mant2; yes, acc2 is to small
+0004ef 2733      clr mant2m
+0004f0 2744      clr mant2h
+0004f1 3098      FADD3a: cpi temp,8
+0004f2 f028      brlo FADD3b
+0004f3 2f23      mov mant2,mant2m
+0004f4 2f34      mov mant2m,mant2h
+0004f5 2744      clr mant2h
+0004f6 5098      subi temp,8
+0004f7 cff9      rjmp FADD3a
+0004f8 2399      FADD3b: tst temp
+0004f9 f029      breq FADD3d
+0004fa 9546      FADD3c: lsr mant2h
+0004fb 9537      ror mant2m
+0004fc 9527      ror mant2
+0004fd 959a      dec temp
+0004fe f7d9      brne FADD3c
+0004ff 2f91      FADD3d: mov temp,sign1
+000500 2796      eor temp,sign2
+000501 f042      brmi FADD4
+000502 d014      rcall UADD
+000503 f6b0      brcc FSADX
+000504 94f7      ror mant1h
+000505 94e7      ror mant1m
+000506 94d7      ror mant1
+000507 5f0f      subi EXPNT1,-1; Add +1
+000508 f68b      brvc FSADX
+000509 c06d      rjmp MAXRES
+00050a d010      FADD4: rcall USUB
+00050b f051      breq FCLR
+00050c f408      brcc FADD5
+00050d d014      rcall NEGMANT
+00050e 20ff      FADD5: tst mant1h; normalize
+00050f f252      brmi FSADX
+000510 0cdd      lsl mant1
+000511 1cee      rol mant1m
+000512 1cff      rol mant1h
+000513 5001      subi EXPNT1,1
+000514 f7cb      brvc FADD5
+000515 c061      rjmp MAXRES
+000516 c067      FCLR: rjmp MINRES
+                 ;
+000517 0ed2      UADD: add mant1,mant2
+000518 1ee3      adc mant1m,mant2m
+000519 1ef4      adc mant1h,mant2h
+00051a 9508      ret
+                 ;
+00051b 1ad2      USUB: sub mant1,mant2
+00051c 0ae3      sbc mant1m,mant2m
+00051d 0af4      sbc mant1h,mant2h
+00051e 9508      ret
+                 ;
+                 ;** ACC1 = -ACC1 **
+00051f d162      FLTNEG: rcall UNPACK
+000520 9510      com sign1
+000521 c174      rjmp REPACK
+                 ;
+000522 ef9f      NEGMANT: ldi temp,-1
+000523 1ad9      sub mant1,temp
+000524 0ae9      sbc mant1m,temp
+000525 0af9      sbc mant1h,temp
+000526 9508      ret
+                 ;
+                 ;** MANT1 <<= 1 **
+000527 0cdd      RLMANT1: lsl mant1
+000528 1cee      rol mant1m
+000529 1cff      rol mant1h
+00052a 1f77      rol mant1t
+00052b 9508      ret
+                 ;
+                 ;** Straight 24bit Unsigned ACC1 / ACC2 **
+00052c 2499      UDIVMANT: clr quot
+00052d 24aa      clr quotm
+00052e 24bb      clr quoth
+00052f e188      ldi count,24
+000530 16d2      UDIVLP: cp mant1,mant2
+000531 06e3      cpc mant1m,mant2m
+000532 06f4      cpc mant1h,mant2h
+000533 f028      brlo UDIV1
+000534 1ad2      sub mant1,mant2
+000535 0ae3      sbc mant1m,mant2m
+000536 0af4      sbc mant1h,mant2h
+000537 9408      sec
+000538 c001      rjmp UDIV2
+000539 9488      UDIV1: clc
+00053a 1c99      UDIV2: rol quot
+00053b 1caa      rol quotm
+00053c 1cbb      rol quoth
+00053d 0cdd      lsl mant1
+00053e 1cee      rol mant1m
+00053f 1cff      rol mant1h
+000540 958a      dec count
+000541 f771      brne UDIVLP
+000542 92df      push mant1
+000543 2cd9      mov mant1,quot
+000544 2cea      mov mant1m,quotm
+000545 2cfb      mov mant1h,quoth
+000546 919f      pop temp
+000547 9596      lsr temp
+000548 f428      brcc udivx
+000549 94d3      inc mant1
+00054a f419      brne udivx
+00054b 94e3      inc mant1m
+00054c f409      brne udivx
+00054d 94f3      inc mant1h
+                 udivx:
+00054e 9508      ret
+                 ;
+                 ;** ACC1 = 1/*r30 **
+00054f d0d9      F1OVERMEM: rcall FSRAMA1
+                 ;** ACC1 = 1/ACC1 **
+000550 d0e2      F1OVERX: rcall AC1TOAC2
+000551 24dd      clr mant1
+000552 24ee      clr mant1m
+000553 e890      ldi temp,0x80
+000554 2ef9      mov mant1h,temp
+000555 e30f      ldi EXPNT1,0x3f; ieee 1.0f
+000556 c006      rjmp FDIV ; do 1/x
+                 ;
+                 ;** Acc1 /= *r30 **
+000557 d0d6      FDIVMEM: rcall FSRAMA2
+000558 c004      rjmp FDIV
+                 ;** ACC1 /= 10.0f */
+000559 2722      FDIV10: clr mant2 ; x/10.0f  could use fmul * 0.1f?
+00055a 2733      clr mant2m
+00055b e240      ldi mant2h,0x20
+00055c e451      ldi EXPNT2,0x41;Put 10.0 -> Acc2
+                 ;** ACC1 /= ACC2 **
+00055d 2355      FDIV: tst EXPNT2 ; -*test*-('") for x/0.0
+00055e f0b9      breq FDIVZ
+00055f 2300      tst EXPNT1
+000560 f0e9      breq MINRES ; 0.0f/x = return 0.0f
+000561 d120      FDIVa: rcall UNPACK
+000562 f0d9      breq MINRES
+000563 2716      eor sign1,sign2; get result sign
+000564 9408      sec
+000565 0b05      sbc EXPNT1,EXPNT2; sub exps.
+000566 f083      brvs MAXRES ; overflow ?
+000567 9546      lsr mant2h ; no, de-norm & div mants
+000568 9537      ror mant2m
+000569 9527      ror mant2
+00056a 94f6      lsr mant1h
+00056b 94e7      ror mant1m
+00056c 94d7      ror mant1
+00056d dfbe      rcall UDIVMANT
+00056e 20ff      tst mant1h ; need norm?
+00056f f02a      brmi FDIVX ; no, exit
+000570 0cdd      lsl mant1
+000571 1cee      rol mant1m
+000572 1cff      rol mant1h
+000573 5001      subi EXPNT1,1 ; --exp
+000574 f013      brvs MAXRES
+000575 c120      FDIVX: rjmp REPACK ; re-pack
+000576 c007      FDIVZ: rjmp MINRES
+000577 e79f      MAXRES: ldi temp,0x7f
+000578 2f09      mov EXPNT1,temp
+000579 2af9      or mant1h,temp
+00057a ef9f      ldi temp,0xff
+00057b 2ed9      mov mant1,temp
+00057c 2ee9      mov mant1m,temp
+00057d 9508      ret
+00057e 24dd      MINRES: clr mant1;Result = 0.0f
+00057f 24ee      clr mant1m
+000580 24ff      clr mant1h
+000581 2700      clr EXPNT1
+000582 2711      clr sign1
+000583 9508      ret
+                 ;
+                 ;** ACC1 *= *r30 **
+000584 d0a9      FMULMEM: rcall FSRAMA2 ; Acc1 *= *r30
+000585 c004      rjmp FMULT
+                 ;** ACC1 *= 10.0f **
+000586 e451      FMUL10: ldi EXPNT2,0x41; IEEE 10.0f
+000587 e240      ldi mant2h,0x20
+000588 2733      clr mant2m
+000589 2722      clr mant2
+                 ;** ACC1 *= ACC2 **
+00058a d0f7      FMULT: rcall UNPACK
+00058b f391      breq MINRES
+00058c 3850      cpi EXPNT2,0x80
+00058d f381      breq MINRES
+00058e 2716      eor sign1,sign2
+00058f 9408      sec
+000590 1f05      adc EXPNT1,EXPNT2
+000591 f32b      brvs MAXRES;FMULMAX
+000592 d00a      rcall UMUL
+000593 20ff      tst mant1h
+000594 f02a      brmi FMULX
+000595 0cbb      lsl quoth
+000596 1cdd      rol mant1
+000597 1cee      rol mant1m
+000598 1cff      rol mant1h
+000599 c0fc      rjmp REPACK
+00059a 5f0f      FMULX: subi EXPNT1,-1
+00059b f2db      brvs MAXRES;FMULMAX
+00059c c0f9      rjmp REPACK
+                 ;
+                 ;** 24bit unsigned Multiply
+00059d 939f      UMUL: push temp
+00059e 938f      push count
+00059f 2499      clr quot
+0005a0 24aa      clr quotm
+0005a1 24bb      clr quoth
+0005a2 2799      clr temp
+0005a3 e188      ldi count,24
+0005a4 0c99      UMULLP: lsl quot
+0005a5 1caa      rol quotm
+0005a6 1cbb      rol quoth
+0005a7 1cdd      rol mant1
+0005a8 1cee      rol mant1m
+0005a9 1cff      rol mant1h
+0005aa f430      brcc UMUL1
+0005ab 0e92      add quot,mant2
+0005ac 1ea3      adc quotm,mant2m
+0005ad 1eb4      adc quoth,mant2h
+0005ae 1ed9      adc mant1,temp
+0005af 1ee9      adc mant1m,temp
+0005b0 1ef9      adc mant1h,temp
+0005b1 958a      UMUL1: dec count
+0005b2 f789      brne UMULLP
+0005b3 918f      pop count
+0005b4 919f      pop temp
+0005b5 9508      ret
+                 ;
+                 ;** ACC1 = (*r30) * (*r30) **
+0005b6 d072      FSQRMEM: rcall FSRAMA1
+                 ;** ACC1 *= ACC1 **
+0005b7 d07b      FSQR: rcall AC1TOAC2
+0005b8 cfd1      rjmp FMULT
+                 ;
+                 sqrthalf:
+0005b9 2722      clr mant2
+0005ba 2733      clr mant2m
+0005bb 2744      clr mant2h
+0005bc e450      ldi EXPNT2,0x40
+0005bd cfa3      rjmp FDIVa ; div by 2 to get our guess
+0005be cfbf      SQERR: rjmp MINRES ; add your own error handler here.
+                 ;** ACC1 = sqrt(*r30) **
+0005bf d069      FSQRTMEM: rcall FSRAMA1
+                 ;** ACC1 = sqrt(ACC1) **
+0005c0 2300      FSQRT: tst EXPNT1
+0005c1 f3e1      breq SQERR ; trap sqrt(0) or sqrt(-x)!
+0005c2 f3da      brmi SQERR
+0005c3 2c5d      mov r5,mant1; save org Num. user must preserve r5-r8!
+0005c4 2c6e      mov r6,mant1m
+0005c5 2c7f      mov r7,mant1h
+0005c6 2e80      mov r8,EXPNT1
+0005c7 dff1      rcall sqrthalf; get first guess
+0005c8 d06a      rcall AC1TOAC2; put it in Acc2
+0005c9 e095      ldi temp,5 ; number of iterations
+0005ca 939f      SQRTLP: push temp
+0005cb d0a4      rcall PUSH2 ; save 'guess' results
+0005cc 2cd5      mov mant1,r5; restore orig Number
+0005cd 2ce6      mov mant1m,r6
+0005ce 2cf7      mov mant1h,r7
+0005cf 2d08      mov EXPNT1,r8
+0005d0 df8c      rcall FDIV
+0005d1 d0a7      rcall POP2
+0005d2 df0e      rcall FADD
+0005d3 dfe5      rcall sqrthalf
+0005d4 d05e      rcall AC1TOAC2
+0005d5 919f      pop temp
+0005d6 959a      dec temp
+0005d7 f791      brne SQRTLP
+0005d8 9508      ret
+                 ;
+                 ;** Compare ACC1 == ACC2 **
+                 ;** return w/temp = 0,1,or -1 (Z,N flags set) **
+0005d9 d07b      FLTCPFLASH: rcall KTOAC2
+0005da c008      rjmp FLTCP
+                 ;** compare two sram floats **
+0005db 93ef      FLTCP2: push zl; save r30,r31, (pointer to acc2 variable)
+0005dc 93ff      push zh
+0005dd 2fec      mov zl,yl
+0005de 2ffd      mov zh,yh
+0005df d049      rcall FSRAMA1
+0005e0 91ff      pop zh
+0005e1 91ef      pop zl
+0005e2 d04b      FLTCPMEM: rcall FSRAMA2 ; compare Acc1 w/Memory
+0005e3 d002      FLTCP: rcall FCMP ; do compare
+0005e4 2399      tst temp ; set status reg accordingly
+0005e5 9508      ret  ; return to caller
+                 ;
+0005e6 2300      FCMP: tst EXPNT1 ; is acc1 pos?
+0005e7 f082      brmi FCMP1 ; no. -*test*-('") acc2
+0005e8 2355      tst EXPNT2 ; yes, is acc2 pos?
+0005e9 f042      brmi A1GTA2 ; no, return Acc1 > Acc2
+0005ea 1705      cp EXPNT1,EXPNT2; both are '+'
+0005eb f040      brlo A1LTA2
+0005ec f429      brne A1GTA2
+0005ed 16d2      cp mant1,mant2; exps are equal, are mants?
+0005ee 06e3      cpc mant1m,mant2m
+0005ef 06f4      cpc mant1h,mant2h
+0005f0 f018      brlo A1LTA2
+0005f1 f021      breq A1EQA2
+0005f2 e091      A1GTA2: ldi temp,1 ; ac1 > ac2
+0005f3 9508      ret
+0005f4 ef9f      A1LTA2: ldi temp,0xff; ac1 < ac2
+0005f5 9508      ret
+0005f6 2799      A1EQA2: clr temp ; ac1 = ac2
+0005f7 9508      ret
+                 ;** we're here, acc1 must be '-' **
+0005f8 2355      FCMP1: tst EXPNT2 ; if acc1 is '-' & acc2 is '+'
+0005f9 f7d2      brpl A1LTA2 ; then acc1 is < acc2
+0005fa 1750      cp EXPNT2,EXPNT1; both are '-', is EXPNT1 more negative?
+0005fb f3b0      brlo A1GTA2
+0005fc f7b9      brne A1LTA2
+0005fd 152d      cp mant2,mant1
+0005fe 053e      cpc mant2m,mant1m
+0005ff 054f      cpc mant2h,mant1h
+000600 f388      brlo A1GTA2
+000601 f3a1      breq A1EQA2 ; return acc1 == acc2
+000602 cff1      rjmp A1LTA2
+                 ;
+                 ;*********************************************************************
+                 ; * These routines are for future atof(), atoi(), atol(), etc.
+                 ;** Fast Multiply by 10 **
+000603 d02f      UMUL10: rcall AC1TOAC2
+000604 df22      rcall RLMANT1
+000605 df21      rcall RLMANT1
+000606 df10      rcall UADD
+000607 4f7f      sbci mant1t,-1; adci 0
+000608 cf1e      rjmp RLMANT1
+                 ;
+000609 dff9      ADDDIG: rcall UMUL10
+00060a 2733      clr mant2m
+00060b 2744      clr mant2h
+00060c 2f29      mov mant2,temp
+00060d 702f      andi mant2,0x0f
+00060e df08      rcall UADD
+00060f 4f7f      sbci mant1t,-1; just add 'C'
+000610 9508      ret
+                 ;*********************************************************************
+                 ;
+                 ;** convert an integer to FP **
+                 ITOFMEM:
+000611 d017      		RCALL	FSRAMA1 					; psuedo 32bit long?
+000612 2f70      		mov 	mant1t,EXPNT1
+000613 2d9d      ITOF:	mov		temp,mant1
+000614 299e      		or 		temp,mant1m
+000615 299f      		or 		temp,mant1h
+000616 2b97      		or 		temp,mant1t
+000617 f409      		brne 	ITOF1
+000618 cf65      		rjmp 	MINRES
+                 ITOF1:
+000619 2377      		tst		mant1t
+00061a f40a      		brpl 	ITOF2
+00061b df06      		rcall 	NEGMANT
+00061c e10e      ITOF2: 	ldi 	EXPNT1,30
+00061d 2377      		tst 	mant1t
+00061e f032      ITOF3: 	brmi 	ITOF4
+00061f 950a      		dec 	EXPNT1
+000620 0cdd      		lsl 	mant1
+000621 1cee      		rol 	mant1m
+000622 1cff      		rol 	mant1h
+000623 1f77      		rol 	mant1t
+000624 cff9      		rjmp 	ITOF3
+000625 2cde      ITOF4: 	mov 	mant1,mant1m
+000626 2cef      		mov		mant1m,mant1h
+000627 2ef7      		mov		mant1h,mant1t
+000628 c06d      		rjmp	REPACK
+                 ;
+                 ;********************************************************************
+                 ;** Memory Move funcs **
+                 ;** Copy SRAM Float to Acc1 **
+000629 90d1      FSRAMA1: ld mant1,z+
+00062a 90e1      ld mant1m,z+
+00062b 90f1      ld mant1h,z+
+00062c 9101      ld EXPNT1,z+
+00062d 9508      ret
+                 ;
+                 ;** Copy SRAM Float to Acc2 **
+00062e 9121      FSRAMA2: ld mant2,z+
+00062f 9131      ld mant2m,z+
+000630 9141      ld mant2h,z+
+000631 9151      ld EXPNT2,z+
+000632 9508      ret
+                 ;
+                 ;
+                 ;** Copy ACC2 = ACC1 **
+                 AC1TOAC2:
+000633 2f50      mov EXPNT2,EXPNT1
+000634 2d2d      mov mant2,mant1
+000635 2d3e      mov mant2m,mant1m
+000636 2d4f      mov mant2h,mant1h
+000637 2f61      mov sign2,sign1
+000638 9508      ret
+                 ;
+                 ;** ACC1 <-> ACC2 **
+000639 92df      SWAPACC: push mant1
+00063a 92ef      push mant1m
+00063b 92ff      push mant1h
+00063c 930f      push EXPNT1
+00063d 931f      push sign1
+00063e 2ed2      mov mant1,mant2
+00063f 2ee3      mov mant1m,mant2m
+000640 2ef4      mov mant1h,mant2h
+000641 2f05      mov EXPNT1,EXPNT2
+000642 2f16      mov sign1,sign2
+000643 916f      pop sign2
+000644 915f      pop EXPNT2
+000645 914f      pop mant2h
+000646 913f      pop mant2m
+000647 912f      pop mant2
+000648 9508      ret
+                 ;
+                 ;** Get 1 byte from program memory & inc pointer **
+000649 95c8      _lpmbyte: lpm
+00064a 9631      adiw zl,1
+00064b 9508      ret
+                 ;
+                 ;** Put a Flash const -> ACC1
+00064c dffc      KTOAC1: rcall _lpmbyte
+00064d 2cd0      mov mant1,r0
+00064e dffa      rcall _lpmbyte
+00064f 2ce0      mov mant1m,r0
+000650 dff8      rcall _lpmbyte
+000651 2cf0      mov mant1h,r0
+000652 dff6      rcall _lpmbyte
+000653 2d00      mov EXPNT1,r0
+000654 9508      ret
+                 ;
+                 ;** Put a Flash const -> ACC2
+000655 dff3      KTOAC2: rcall _lpmbyte
+000656 2d20      mov mant2,r0
+000657 dff1      rcall _lpmbyte
+000658 2d30      mov mant2m,r0
+000659 dfef      rcall _lpmbyte
+00065a 2d40      mov mant2h,r0
+00065b dfed      rcall _lpmbyte
+00065c 2d50      mov EXPNT2,r0
+00065d 9508      ret
+                 ;
+                 ;** 'Hold' Acc1 in sram **
+00065e 92d0 011e PUSH1: sts MATHTMP,mant1
+000660 92e0 011f sts MATHTMP+1,mant1m
+000662 92f0 0120 sts MATHTMP+2,mant1h
+000664 9300 0121 sts MATHTMP+3,EXPNT1
+000666 9508      ret
+                 ;
+                 ;** 'Restore' Acc1 from sram **
+000667 90d0 011e POP1: lds mant1,MATHTMP
+000669 90e0 011f lds mant1m,MATHTMP+1
+00066b 90f0 0120 lds mant1h,MATHTMP+2
+00066d 9100 0121 lds EXPNT1,MATHTMP+3
+00066f 9508      ret
+                 ;
+                 ;** 'Hold' Acc2 in sram **
+000670 9320 0122 PUSH2: sts MATHTMP+4,mant2
+000672 9330 0123 sts MATHTMP+5,mant2m
+000674 9340 0124 sts MATHTMP+6,mant2h
+000676 9350 0125 sts MATHTMP+7,EXPNT2
+000678 9508      ret
+                 ;
+                 ;** 'Restore' Acc2 from sram **
+000679 9120 0122 POP2: lds mant2,MATHTMP+4
+00067b 9130 0123 lds mant2m,MATHTMP+5
+00067d 9140 0124 lds mant2h,MATHTMP+6
+00067f 9150 0125 lds EXPNT2,MATHTMP+7
+000681 9508      ret
+                 ;
+                 ;********************************************************************
+                 ;** IEEE convertions **
+                 ;** Convert ACC1 & ACC2 from IEEE to work format **
+000682 939f      UNPACK: push temp
+000683 2f10      mov sign1,EXPNT1
+000684 e890      ldi temp,0x80
+000685 0cff      lsl mant1h
+000686 1f00      rol EXPNT1
+000687 2709      eor EXPNT1,temp; AVR has no 'eori'
+000688 0f99      lsl temp
+000689 94f7      ror mant1h ; restore Hidden '1' bit
+00068a 7810      andi sign1,0x80
+                 ;** Un-Pack Acc2 **
+00068b 2f65      mov sign2,EXPNT2
+00068c e890      ldi temp,0x80
+00068d 0f44      lsl mant2h
+00068e 1f55      rol EXPNT2
+00068f 2759      eor EXPNT2,temp
+000690 0f99      lsl temp
+000691 9547      ror mant2h
+000692 7860      andi sign2,0x80
+000693 919f      pop temp
+000694 3800      cpi EXPNT1,0x80; return w/ACC1=0 ?
+000695 9508      ret
+                 ;
+                 ;** Convert Acc1 from work format to IEEE **
+000696 939f      REPACK: push temp
+000697 0cff      lsl mant1h
+000698 e890      ldi temp,0x80
+000699 2790      eor temp,EXPNT1
+00069a 0f11      lsl sign1
+00069b 9597      ror temp
+00069c 94f7      ror mant1h
+00069d 2f09      mov EXPNT1,temp
+00069e 919f      pop temp
+00069f 9508      ret
+                 ;
+                 ;** Constants used for decimal conversion **
+0006a0 4240
+0006a1 000f      I1E6: .db 0x40,0x42,0x0f,0;  1,000,000
+0006a2 86a0
+0006a3 0001      I1E5: .db 0xa0,0x86,0x01,0;    100,000
+0006a4 2710
+0006a5 0000      I1E4: .db 0x10,0x27,0x00,0;     10,000
+0006a6 03e8
+0006a7 0000      I1E3: .db 0xe8,0x03,0x00,0;      1,000
+0006a8 0064
+0006a9 0000      I1E2: .db 0x64,0x00,0x00,0;        100
+0006aa 000a
+0006ab 0000      I1E1: .db 0x0a,0x00,0x00,0;         10
+                 ;
+                 ;** IEEE format **
+0006ac 0fdb
+0006ad 4049      PI: .db 0xdb,0x0f,0x49,0x40; 3.1415927f
+0006ae cccd
+0006af 3dcc      Kp1: .db 0xCD,0xCC,0xCC,0x3D; 0.1f
+0006b0 0000
+0006b1 3f00      Kp5: .db 0x00,0x00,0x00,0x3F; 0.5f
+0006b2 0000
+0006b3 3f80      K1: .db 0x00,0x00,0x80,0x3F; 1.0f
+0006b4 0000
+0006b5 4120      K10: .db 0x00,0x00,0x20,0x41;10.0f
+                 ;
+0006b6 9680
+0006b7 4b18      K1E7: .db 0x80,0x96,0x18,0x4b
+0006b8 bc20
+0006b9 4cbe      K1E8: .db 0x20,0xbc,0xbe,0x4c
+0006ba 23fe
+0006bb 4974      K999999p9: .db 0xfe,0x23,0x74,0x49; 999999.9f
+0006bc 967f
+0006bd 4b18      K9999999:  .db 0x7f,0x96,0x18,0x4b;9999999.0f
+                 ;
+                 
+                 
+                 
+                 			.INCLUDE "fontlarge.asm"		; 24-pixel font for numeric output
+                 
+                 //  Font data for Eurostile 24pt
+                 // 
+                 
+                 		.INCLUDE "chardefs.inc"
+                 
+                 ; Character descriptor structure
+                 
+                 		.EQU		CharCode			= 0
+                 		.EQU		CharWidth 			= 1
+                 		.EQU		CharEntry			= 2
+                 
+                 ; Character set descriptor structure
+                 
+                 		.EQU		CharTable			= 0
+                 		.EQU		CharHeight			= 2
+                 		.EQU		CharDefaultWidth	=3
+                 
+                 C24CharMap:
+                 
+                 C24Excl:
+0006be fcff
+0006bf 0078      		.DB		0b11111111, 0b11111100, 0b01111000, 0b00000000			// ##############   ####           
+0006c0 fcff
+0006c1 0078      		.DB		0b11111111, 0b11111100, 0b01111000, 0b00000000			// ##############   ####           
+0006c2 fcff
+0006c3 0078      		.DB		0b11111111, 0b11111100, 0b01111000, 0b00000000			// ##############   ####           
+0006c4 fcff
+0006c5 0078      		.DB		0b11111111, 0b11111100, 0b01111000, 0b00000000			// ##############   #### 
+                 C24ExclEnd:          
+                 
+                 C24Hash:
+0006c6 0e00
+0006c7 0000      		.DB		0b00000000, 0b00001110, 0b00000000, 0b00000000			//             ###                 
+0006c8 8e03
+0006c9 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+0006ca 8e03
+0006cb 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+0006cc 8f03
+0006cd 00f8      		.DB		0b00000011, 0b10001111, 0b11111000, 0b00000000			//       ###   #########           
+0006ce ff03
+0006cf 00f8      		.DB		0b00000011, 0b11111111, 0b11111000, 0b00000000			//       ###############           
+0006d0 ff1f
+0006d1 00e0      		.DB		0b00011111, 0b11111111, 0b11100000, 0b00000000			//    ################             
+0006d2 feff
+0006d3 0000      		.DB		0b11111111, 0b11111110, 0b00000000, 0b00000000			// ###############                 
+0006d4 8eff
+0006d5 0000      		.DB		0b11111111, 0b10001110, 0b00000000, 0b00000000			// #########   ###                 
+0006d6 8e83
+0006d7 0000      		.DB		0b10000011, 0b10001110, 0b00000000, 0b00000000			// #     ###   ###                 
+0006d8 8e03
+0006d9 0008      		.DB		0b00000011, 0b10001110, 0b00001000, 0b00000000			//       ###   ###     #           
+0006da 8f03
+0006db 00f8      		.DB		0b00000011, 0b10001111, 0b11111000, 0b00000000			//       ###   #########           
+0006dc ff03
+0006dd 00f8      		.DB		0b00000011, 0b11111111, 0b11111000, 0b00000000			//       ###############           
+0006de ff3f
+0006df 00e0      		.DB		0b00111111, 0b11111111, 0b11100000, 0b00000000			//   #################             
+0006e0 feff
+0006e1 0000      		.DB		0b11111111, 0b11111110, 0b00000000, 0b00000000			// ###############                 
+0006e2 8eff
+0006e3 0000      		.DB		0b11111111, 0b10001110, 0b00000000, 0b00000000			// #########   ###                 
+0006e4 8e83
+0006e5 0000      		.DB		0b10000011, 0b10001110, 0b00000000, 0b00000000			// #     ###   ###                 
+0006e6 8e03
+0006e7 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+0006e8 8003
+0006e9 0000      		.DB		0b00000011, 0b10000000, 0b00000000, 0b00000000			//       ###                       
+                 C24HashEnd:          
+                 
+                 C24Percent:
+0006ea 807f
+0006eb 0000      		.DB		0b01111111, 0b10000000, 0b00000000, 0b00000000			//  ########                       
+0006ec c0ff
+0006ed 0000      		.DB		0b11111111, 0b11000000, 0b00000000, 0b00000000			// ##########                      
+0006ee c0c0
+0006ef 0000      		.DB		0b11000000, 0b11000000, 0b00000000, 0b00000000			// ##      ##                      
+0006f0 c0c0
+0006f1 0000      		.DB		0b11000000, 0b11000000, 0b00000000, 0b00000000			// ##      ##                      
+0006f2 c0c0
+0006f3 0008      		.DB		0b11000000, 0b11000000, 0b00001000, 0b00000000			// ##      ##          #           
+0006f4 c0c0
+0006f5 0018      		.DB		0b11000000, 0b11000000, 0b00011000, 0b00000000			// ##      ##         ##           
+0006f6 c0c1
+0006f7 0070      		.DB		0b11000001, 0b11000000, 0b01110000, 0b00000000			// ##     ###       ###            
+0006f8 c0ff
+0006f9 00e0      		.DB		0b11111111, 0b11000000, 0b11100000, 0b00000000			// ##########      ###             
+0006fa 837f
+0006fb 0080      		.DB		0b01111111, 0b10000011, 0b10000000, 0b00000000			//  ########     ###               
+0006fc 0f00
+0006fd 0000      		.DB		0b00000000, 0b00001111, 0b00000000, 0b00000000			//             ####                
+0006fe 1c00
+0006ff 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+000700 7000
+000701 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000702 e000
+000703 0000      		.DB		0b00000000, 0b11100000, 0b00000000, 0b00000000			//         ###                     
+000704 8003
+000705 0000      		.DB		0b00000011, 0b10000000, 0b00000000, 0b00000000			//       ###                       
+000706 0007
+000707 0000      		.DB		0b00000111, 0b00000000, 0b00000000, 0b00000000			//      ###                        
+000708 0f1c
+000709 00e0      		.DB		0b00011100, 0b00001111, 0b11100000, 0b00000000			//    ###      #######             
+00070a 3f78
+00070b 00f0      		.DB		0b01111000, 0b00111111, 0b11110000, 0b00000000			//  ####     ##########            
+00070c 30e0
+00070d 0018      		.DB		0b11100000, 0b00110000, 0b00011000, 0b00000000			// ###       ##       ##           
+00070e 30c0
+00070f 0018      		.DB		0b11000000, 0b00110000, 0b00011000, 0b00000000			// ##        ##       ##           
+000710 3080
+000711 0018      		.DB		0b10000000, 0b00110000, 0b00011000, 0b00000000			// #         ##       ##           
+000712 3000
+000713 0018      		.DB		0b00000000, 0b00110000, 0b00011000, 0b00000000			//           ##       ##           
+000714 3000
+000715 0038      		.DB		0b00000000, 0b00110000, 0b00111000, 0b00000000			//           ##      ###           
+000716 3f00
+000717 00f8      		.DB		0b00000000, 0b00111111, 0b11111000, 0b00000000			//           ###########           
+000718 1f00
+000719 00f0      		.DB		0b00000000, 0b00011111, 0b11110000, 0b00000000			//            #########            
+                 C24PercentEnd:
+                 
+                 C24LeftParen:
+00071a ff0f
+00071b 00fe      		.DB		0b00001111, 0b11111111, 0b11111110, 0b00000000			//     ###################         
+00071c ff7f
+00071d c0ff      		.DB		0b01111111, 0b11111111, 0b11111111, 0b11000000			//  #########################      
+00071e ff7f
+00071f c0ff      		.DB		0b01111111, 0b11111111, 0b11111111, 0b11000000			//  #########################      
+000720 ffff
+000721 e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+000722 00f0
+000723 e001      		.DB		0b11110000, 0b00000000, 0b00000001, 0b11100000			// ####                   ####     
+000724 00e0
+000725 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+000726 00e0
+000727 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+                 C24LeftParenEnd:
+                 	
+                 C24RightParen:
+000728 00e0
+000729 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+00072a 00e0
+00072b e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+00072c 00f8
+00072d e003      		.DB		0b11111000, 0b00000000, 0b00000011, 0b11100000			// #####                 #####     
+00072e ffff
+00072f e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+000730 ff7f
+000731 c0ff      		.DB		0b01111111, 0b11111111, 0b11111111, 0b11000000			//  #########################      
+000732 ff7f
+000733 c0ff      		.DB		0b01111111, 0b11111111, 0b11111111, 0b11000000			//  #########################      
+000734 ff0f
+000735 00fe      		.DB		0b00001111, 0b11111111, 0b11111110, 0b00000000			//     ###################         
+                 C24RightParenEnd:
+                 
+                 C24Asterisk:
+000736 0008
+000737 0000      		.DB		0b00001000, 0b00000000, 0b00000000, 0b00000000			//     #                           
+000738 0018
+000739 0000      		.DB		0b00011000, 0b00000000, 0b00000000, 0b00000000			//    ##                           
+00073a c018
+00073b 0000      		.DB		0b00011000, 0b11000000, 0b00000000, 0b00000000			//    ##   ##                      
+00073c e01d
+00073d 0000      		.DB		0b00011101, 0b11100000, 0b00000000, 0b00000000			//    ### ####                     
+00073e 800f
+00073f 0000      		.DB		0b00001111, 0b10000000, 0b00000000, 0b00000000			//     #####                       
+000740 00ff
+000741 0000      		.DB		0b11111111, 0b00000000, 0b00000000, 0b00000000			// ########                        
+000742 00ff
+000743 0000      		.DB		0b11111111, 0b00000000, 0b00000000, 0b00000000			// ########                        
+000744 800f
+000745 0000      		.DB		0b00001111, 0b10000000, 0b00000000, 0b00000000			//     #####                       
+000746 e01d
+000747 0000      		.DB		0b00011101, 0b11100000, 0b00000000, 0b00000000			//    ### ####                     
+000748 c018
+000749 0000      		.DB		0b00011000, 0b11000000, 0b00000000, 0b00000000			//    ##   ##                      
+00074a 0018
+00074b 0000      		.DB		0b00011000, 0b00000000, 0b00000000, 0b00000000			//    ##                           
+00074c 0008
+00074d 0000      		.DB		0b00001000, 0b00000000, 0b00000000, 0b00000000			//     #                           
+                 C24AsteriskEnd:
+                 
+                 C24Plus:
+00074e 7000
+00074f 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000750 7000
+000751 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000752 7000
+000753 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000754 7000
+000755 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000756 7000
+000757 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000758 7000
+000759 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+00075a ff3f
+00075b 00c0      		.DB		0b00111111, 0b11111111, 0b11000000, 0b00000000			//   ################              
+00075c ff3f
+00075d 00c0      		.DB		0b00111111, 0b11111111, 0b11000000, 0b00000000			//   ################              
+00075e ff3f
+00075f 00c0      		.DB		0b00111111, 0b11111111, 0b11000000, 0b00000000			//   ################              
+000760 ff3f
+000761 00c0      		.DB		0b00111111, 0b11111111, 0b11000000, 0b00000000			//   ################              
+000762 7000
+000763 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000764 7000
+000765 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000766 7000
+000767 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+000768 7000
+000769 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+00076a 7000
+00076b 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+00076c 7000
+00076d 0000      		.DB		0b00000000, 0b01110000, 0b00000000, 0b00000000			//          ###                    
+                 C24PlusEnd:
+                 
+                 C24Comma:
+00076e 0000
+00076f 0001      		.DB		0b00000000, 0b00000000, 0b00000001, 0b00000000			//                        #        
+000770 0000
+000771 0079      		.DB		0b00000000, 0b00000000, 0b01111001, 0b00000000			//                  ####  #        
+000772 0000
+000773 007b      		.DB		0b00000000, 0b00000000, 0b01111011, 0b00000000			//                  #### ##        
+000774 0000
+000775 007f      		.DB		0b00000000, 0b00000000, 0b01111111, 0b00000000			//                  #######        
+000776 0000
+000777 007e      		.DB		0b00000000, 0b00000000, 0b01111110, 0b00000000			//                  ######         
+                 C24CommaEnd:
+                 
+                 C24Minus:
+000778 1c00
+000779 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+00077a 1c00
+00077b 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+00077c 1c00
+00077d 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+00077e 1c00
+00077f 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+000780 1c00
+000781 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+000782 1c00
+000783 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+000784 1c00
+000785 0000      		.DB		0b00000000, 0b00011100, 0b00000000, 0b00000000			//            ###                  
+                 C24MinusEnd:
+                 
+                 C24Decimal:
+000786 0000
+000787 0078      		.DB		0b00000000, 0b00000000, 0b01111000, 0b00000000			//                  ####           
+000788 0000
+000789 0078      		.DB		0b00000000, 0b00000000, 0b01111000, 0b00000000			//                  ####           
+00078a 0000
+00078b 0078      		.DB		0b00000000, 0b00000000, 0b01111000, 0b00000000			//                  ####           
+00078c 0000
+00078d 0078      		.DB		0b00000000, 0b00000000, 0b01111000, 0b00000000			//                  ####           
+                 C24DecimalEnd:
+                 
+                 C24Slash:
+00078e 0000
+00078f 2000      		.DB		0b00000000, 0b00000000, 0b00000000, 0b00100000			//                           #     
+000790 0000
+000791 6000      		.DB		0b00000000, 0b00000000, 0b00000000, 0b01100000			//                          ##     
+000792 0000
+000793 e001      		.DB		0b00000000, 0b00000000, 0b00000001, 0b11100000			//                        ####     
+000794 0000
+000795 c003      		.DB		0b00000000, 0b00000000, 0b00000011, 0b11000000			//                       ####      
+000796 0000
+000797 800f      		.DB		0b00000000, 0b00000000, 0b00001111, 0b10000000			//                     #####       
+000798 0000
+000799 003e      		.DB		0b00000000, 0b00000000, 0b00111110, 0b00000000			//                   #####         
+00079a 0000
+00079b 0078      		.DB		0b00000000, 0b00000000, 0b01111000, 0b00000000			//                  ####           
+00079c 0100
+00079d 00f0      		.DB		0b00000000, 0b00000001, 0b11110000, 0b00000000			//                #####            
+00079e 0300
+00079f 00c0      		.DB		0b00000000, 0b00000011, 0b11000000, 0b00000000			//               ####              
+0007a0 0f00
+0007a1 0000      		.DB		0b00000000, 0b00001111, 0b00000000, 0b00000000			//             ####                
+0007a2 3e00
+0007a3 0000      		.DB		0b00000000, 0b00111110, 0b00000000, 0b00000000			//           #####                 
+0007a4 7800
+0007a5 0000      		.DB		0b00000000, 0b01111000, 0b00000000, 0b00000000			//          ####                   
+0007a6 e001
+0007a7 0000      		.DB		0b00000001, 0b11100000, 0b00000000, 0b00000000			//        ####                     
+0007a8 c007
+0007a9 0000      		.DB		0b00000111, 0b11000000, 0b00000000, 0b00000000			//      #####                      
+0007aa 000f
+0007ab 0000      		.DB		0b00001111, 0b00000000, 0b00000000, 0b00000000			//     ####                        
+0007ac 003c
+0007ad 0000      		.DB		0b00111100, 0b00000000, 0b00000000, 0b00000000			//   ####                          
+0007ae 00f8
+0007af 0000      		.DB		0b11111000, 0b00000000, 0b00000000, 0b00000000			// #####                           
+0007b0 00e0
+0007b1 0000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b00000000			// ###                             
+0007b2 00c0
+0007b3 0000      		.DB		0b11000000, 0b00000000, 0b00000000, 0b00000000			// ##                              
+                 C24SlashEnd:
+                 
+                 C24n0:
+0007b4 ff0f
+0007b5 0080      		.DB		0b00001111, 0b11111111, 0b10000000, 0b00000000			//     #############               
+0007b6 ff3f
+0007b7 00e0      		.DB		0b00111111, 0b11111111, 0b11100000, 0b00000000			//   #################             
+0007b8 ff7f
+0007b9 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0007ba ff7f
+0007bb 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0007bc 01f0
+0007bd 00f8      		.DB		0b11110000, 0b00000001, 0b11111000, 0b00000000			// ####           ######           
+0007be 00e0
+0007bf 0078      		.DB		0b11100000, 0b00000000, 0b01111000, 0b00000000			// ###              ####           
+0007c0 00e0
+0007c1 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007c2 00e0
+0007c3 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007c4 00e0
+0007c5 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007c6 00e0
+0007c7 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007c8 00e0
+0007c9 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007ca 00e0
+0007cb 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007cc 00e0
+0007cd 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+0007ce 00f0
+0007cf 0078      		.DB		0b11110000, 0b00000000, 0b01111000, 0b00000000			// ####             ####           
+0007d0 ff7f
+0007d1 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0007d2 ff7f
+0007d3 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0007d4 ff3f
+0007d5 00e0      		.DB		0b00111111, 0b11111111, 0b11100000, 0b00000000			//   #################             
+0007d6 ff0f
+0007d7 0080      		.DB		0b00001111, 0b11111111, 0b10000000, 0b00000000			//     #############               
+                 C24n0End:
+                 
+                 C24n1:
+0007d8 0002
+0007d9 0000      		.DB		0b00000010, 0b00000000, 0b00000000, 0b00000000			//       #                         
+0007da 0007
+0007db 0000      		.DB		0b00000111, 0b00000000, 0b00000000, 0b00000000			//      ###                        
+0007dc 800f
+0007dd 0000      		.DB		0b00001111, 0b10000000, 0b00000000, 0b00000000			//     #####                       
+0007de 001f
+0007df 0000      		.DB		0b00011111, 0b00000000, 0b00000000, 0b00000000			//    #####                        
+0007e0 003e
+0007e1 0000      		.DB		0b00111110, 0b00000000, 0b00000000, 0b00000000			//   #####                         
+0007e2 007c
+0007e3 0000      		.DB		0b01111100, 0b00000000, 0b00000000, 0b00000000			//  #####                          
+0007e4 00f8
+0007e5 0000      		.DB		0b11111000, 0b00000000, 0b00000000, 0b00000000			// #####                           
+0007e6 00f0
+0007e7 0000      		.DB		0b11110000, 0b00000000, 0b00000000, 0b00000000			// ####                            
+0007e8 ffff
+0007e9 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+0007ea ffff
+0007eb 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+0007ec ffff
+0007ed 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+0007ee ffff
+0007ef 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+                 C24n1End:
+                 
+                 C24n2:
+0007f0 071e
+0007f1 00f8      		.DB		0b00011110, 0b00000111, 0b11111000, 0b00000000			//    ####      ########           
+0007f2 0f7e
+0007f3 00f8      		.DB		0b01111110, 0b00001111, 0b11111000, 0b00000000			//  ######     #########           
+0007f4 0f7e
+0007f5 00f8      		.DB		0b01111110, 0b00001111, 0b11111000, 0b00000000			//  ######     #########           
+0007f6 1ffe
+0007f7 00f8      		.DB		0b11111110, 0b00011111, 0b11111000, 0b00000000			// #######    ##########           
+0007f8 1ef0
+0007f9 0038      		.DB		0b11110000, 0b00011110, 0b00111000, 0b00000000			// ####       ####   ###           
+0007fa 1ce0
+0007fb 0038      		.DB		0b11100000, 0b00011100, 0b00111000, 0b00000000			// ###        ###    ###           
+0007fc 1ce0
+0007fd 0038      		.DB		0b11100000, 0b00011100, 0b00111000, 0b00000000			// ###        ###    ###           
+0007fe 3ce0
+0007ff 0038      		.DB		0b11100000, 0b00111100, 0b00111000, 0b00000000			// ###       ####    ###           
+000800 3ce0
+000801 0038      		.DB		0b11100000, 0b00111100, 0b00111000, 0b00000000			// ###       ####    ###           
+000802 38e0
+000803 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+000804 38e0
+000805 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+000806 78f0
+000807 0038      		.DB		0b11110000, 0b01111000, 0b00111000, 0b00000000			// ####     ####     ###           
+000808 f8ff
+000809 0038      		.DB		0b11111111, 0b11111000, 0b00111000, 0b00000000			// #############     ###           
+00080a f07f
+00080b 0038      		.DB		0b01111111, 0b11110000, 0b00111000, 0b00000000			//  ###########      ###           
+00080c f03f
+00080d 0038      		.DB		0b00111111, 0b11110000, 0b00111000, 0b00000000			//   ##########      ###           
+00080e c01f
+00080f 0038      		.DB		0b00011111, 0b11000000, 0b00111000, 0b00000000			//    #######        ###           
+                 C24n2End:
+                 
+                 C24n3:
+000810 0300
+000811 00c0      		.DB		0b00000000, 0b00000011, 0b11000000, 0b00000000			//               ####              
+000812 033e
+000813 00f0      		.DB		0b00111110, 0b00000011, 0b11110000, 0b00000000			//   #####       ######            
+000814 037e
+000815 00f0      		.DB		0b01111110, 0b00000011, 0b11110000, 0b00000000			//  ######       ######            
+000816 037e
+000817 00f8      		.DB		0b01111110, 0b00000011, 0b11111000, 0b00000000			//  ######       #######           
+000818 00f0
+000819 0078      		.DB		0b11110000, 0b00000000, 0b01111000, 0b00000000			// ####             ####           
+00081a 00e0
+00081b 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+00081c 00e0
+00081d 0038      		.DB		0b11100000, 0b00000000, 0b00111000, 0b00000000			// ###               ###           
+00081e 70e0
+00081f 0038      		.DB		0b11100000, 0b01110000, 0b00111000, 0b00000000			// ###      ###      ###           
+000820 70e0
+000821 0038      		.DB		0b11100000, 0b01110000, 0b00111000, 0b00000000			// ###      ###      ###           
+000822 70e0
+000823 0038      		.DB		0b11100000, 0b01110000, 0b00111000, 0b00000000			// ###      ###      ###           
+000824 70e0
+000825 0038      		.DB		0b11100000, 0b01110000, 0b00111000, 0b00000000			// ###      ###      ###           
+000826 70e0
+000827 0038      		.DB		0b11100000, 0b01110000, 0b00111000, 0b00000000			// ###      ###      ###           
+000828 f8f0
+000829 0078      		.DB		0b11110000, 0b11111000, 0b01111000, 0b00000000			// ####    #####    ####           
+00082a dfff
+00082b 00f8      		.DB		0b11111111, 0b11011111, 0b11111000, 0b00000000			// ########## ##########           
+00082c df7f
+00082d 00f0      		.DB		0b01111111, 0b11011111, 0b11110000, 0b00000000			//  ######### #########            
+00082e 9f7f
+00082f 00f0      		.DB		0b01111111, 0b10011111, 0b11110000, 0b00000000			//  ########  #########            
+000830 071f
+000831 00c0      		.DB		0b00011111, 0b00000111, 0b11000000, 0b00000000			//    #####     #####              
+                 C24n3End:
+                 
+                 C24n4:
+000832 1f00
+000833 0000      		.DB		0b00000000, 0b00011111, 0b00000000, 0b00000000			//            #####                
+000834 3f00
+000835 0000      		.DB		0b00000000, 0b00111111, 0b00000000, 0b00000000			//           ######                
+000836 ff00
+000837 0000      		.DB		0b00000000, 0b11111111, 0b00000000, 0b00000000			//         ########                
+000838 ff01
+000839 0000      		.DB		0b00000001, 0b11111111, 0b00000000, 0b00000000			//        #########                
+00083a e703
+00083b 0000      		.DB		0b00000011, 0b11100111, 0b00000000, 0b00000000			//       #####  ###                
+00083c c70f
+00083d 0000      		.DB		0b00001111, 0b11000111, 0b00000000, 0b00000000			//     ######   ###                
+00083e 871f
+00083f 0000      		.DB		0b00011111, 0b10000111, 0b00000000, 0b00000000			//    ######    ###                
+000840 073e
+000841 0000      		.DB		0b00111110, 0b00000111, 0b00000000, 0b00000000			//   #####      ###                
+000842 077c
+000843 0000      		.DB		0b01111100, 0b00000111, 0b00000000, 0b00000000			//  #####       ###                
+000844 07f8
+000845 0000      		.DB		0b11111000, 0b00000111, 0b00000000, 0b00000000			// #####        ###                
+000846 07e0
+000847 0000      		.DB		0b11100000, 0b00000111, 0b00000000, 0b00000000			// ###          ###                
+000848 ffff
+000849 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+00084a ffff
+00084b 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+00084c ffff
+00084d 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+00084e ffff
+00084f 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+000850 0700
+000851 0000      		.DB		0b00000000, 0b00000111, 0b00000000, 0b00000000			//              ###                
+000852 0700
+000853 0000      		.DB		0b00000000, 0b00000111, 0b00000000, 0b00000000			//              ###                
+000854 0700
+000855 0000      		.DB		0b00000000, 0b00000111, 0b00000000, 0b00000000			//              ###                
+                 C24n4End:
+                 
+                 C24n5:
+000856 e1ff
+000857 00e0      		.DB		0b11111111, 0b11100001, 0b11100000, 0b00000000			// ###########    ####             
+000858 e1ff
+000859 00f0      		.DB		0b11111111, 0b11100001, 0b11110000, 0b00000000			// ###########    #####            
+00085a e1ff
+00085b 00f0      		.DB		0b11111111, 0b11100001, 0b11110000, 0b00000000			// ###########    #####            
+00085c e1ff
+00085d 00f8      		.DB		0b11111111, 0b11100001, 0b11111000, 0b00000000			// ###########    ######           
+00085e c0e1
+00085f 0038      		.DB		0b11100001, 0b11000000, 0b00111000, 0b00000000			// ###    ###        ###           
+000860 80e1
+000861 0038      		.DB		0b11100001, 0b10000000, 0b00111000, 0b00000000			// ###    ##         ###           
+000862 80e3
+000863 0038      		.DB		0b11100011, 0b10000000, 0b00111000, 0b00000000			// ###   ###         ###           
+000864 80e3
+000865 0038      		.DB		0b11100011, 0b10000000, 0b00111000, 0b00000000			// ###   ###         ###           
+000866 80e3
+000867 0038      		.DB		0b11100011, 0b10000000, 0b00111000, 0b00000000			// ###   ###         ###           
+000868 80e3
+000869 0038      		.DB		0b11100011, 0b10000000, 0b00111000, 0b00000000			// ###   ###         ###           
+00086a 80e3
+00086b 0038      		.DB		0b11100011, 0b10000000, 0b00111000, 0b00000000			// ###   ###         ###           
+00086c c0e3
+00086d 0078      		.DB		0b11100011, 0b11000000, 0b01111000, 0b00000000			// ###   ####       ####           
+00086e ffe3
+00086f 00f0      		.DB		0b11100011, 0b11111111, 0b11110000, 0b00000000			// ###   ##############            
+000870 ffe1
+000871 00f0      		.DB		0b11100001, 0b11111111, 0b11110000, 0b00000000			// ###    #############            
+000872 ffe0
+000873 00e0      		.DB		0b11100000, 0b11111111, 0b11100000, 0b00000000			// ###     ###########             
+000874 7f00
+000875 0080      		.DB		0b00000000, 0b01111111, 0b10000000, 0b00000000			//          ########               
+                 C24n5End:
+                 
+                 C24n6:
+000876 ff0f
+000877 0080      		.DB		0b00001111, 0b11111111, 0b10000000, 0b00000000			//     #############               
+000878 ff3f
+000879 00e0      		.DB		0b00111111, 0b11111111, 0b11100000, 0b00000000			//   #################             
+00087a ff7f
+00087b 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+00087c ffff
+00087d 00f0      		.DB		0b11111111, 0b11111111, 0b11110000, 0b00000000			// ####################            
+00087e 70f0
+00087f 0078      		.DB		0b11110000, 0b01110000, 0b01111000, 0b00000000			// ####     ###     ####           
+000880 60e0
+000881 0038      		.DB		0b11100000, 0b01100000, 0b00111000, 0b00000000			// ###      ##       ###           
+000882 e0e0
+000883 0038      		.DB		0b11100000, 0b11100000, 0b00111000, 0b00000000			// ###     ###       ###           
+000884 e0e0
+000885 0038      		.DB		0b11100000, 0b11100000, 0b00111000, 0b00000000			// ###     ###       ###           
+000886 e0e0
+000887 0038      		.DB		0b11100000, 0b11100000, 0b00111000, 0b00000000			// ###     ###       ###           
+000888 e0e0
+000889 0038      		.DB		0b11100000, 0b11100000, 0b00111000, 0b00000000			// ###     ###       ###           
+00088a e0e0
+00088b 0038      		.DB		0b11100000, 0b11100000, 0b00111000, 0b00000000			// ###     ###       ###           
+00088c f0f0
+00088d 0078      		.DB		0b11110000, 0b11110000, 0b01111000, 0b00000000			// ####    ####     ####           
+00088e fffc
+00088f 00f8      		.DB		0b11111100, 0b11111111, 0b11111000, 0b00000000			// ######  #############           
+000890 7f7c
+000891 00f0      		.DB		0b01111100, 0b01111111, 0b11110000, 0b00000000			//  #####   ###########            
+000892 7f7c
+000893 00f0      		.DB		0b01111100, 0b01111111, 0b11110000, 0b00000000			//  #####   ###########            
+000894 1f1c
+000895 00c0      		.DB		0b00011100, 0b00011111, 0b11000000, 0b00000000			//    ###     #######              
+                 C24n6End:
+                 
+                 C24n7:
+000896 00e0
+000897 0000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b00000000			// ###                             
+000898 00e0
+000899 0000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b00000000			// ###                             
+00089a 00e0
+00089b 0000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b00000000			// ###                             
+00089c 00e0
+00089d 0018      		.DB		0b11100000, 0b00000000, 0b00011000, 0b00000000			// ###                ##           
+00089e 00e0
+00089f 0078      		.DB		0b11100000, 0b00000000, 0b01111000, 0b00000000			// ###              ####           
+0008a0 01e0
+0008a1 00f8      		.DB		0b11100000, 0b00000001, 0b11111000, 0b00000000			// ###            ######           
+0008a2 07e0
+0008a3 00f8      		.DB		0b11100000, 0b00000111, 0b11111000, 0b00000000			// ###          ########           
+0008a4 1fe0
+0008a5 00f0      		.DB		0b11100000, 0b00011111, 0b11110000, 0b00000000			// ###        #########            
+0008a6 7fe0
+0008a7 0080      		.DB		0b11100000, 0b01111111, 0b10000000, 0b00000000			// ###      ########               
+0008a8 fee1
+0008a9 0000      		.DB		0b11100001, 0b11111110, 0b00000000, 0b00000000			// ###    ########                 
+0008aa f8ef
+0008ab 0000      		.DB		0b11101111, 0b11111000, 0b00000000, 0b00000000			// ### #########                   
+0008ac e0ff
+0008ad 0000      		.DB		0b11111111, 0b11100000, 0b00000000, 0b00000000			// ###########                     
+0008ae 80ff
+0008af 0000      		.DB		0b11111111, 0b10000000, 0b00000000, 0b00000000			// #########                       
+0008b0 00fe
+0008b1 0000      		.DB		0b11111110, 0b00000000, 0b00000000, 0b00000000			// #######                         
+0008b2 00f8
+0008b3 0000      		.DB		0b11111000, 0b00000000, 0b00000000, 0b00000000			// #####                           
+                 C24n7End:
+                 
+                 C24n8:
+0008b4 0f3f
+0008b5 00c0      		.DB		0b00111111, 0b00001111, 0b11000000, 0b00000000			//   ######    ######              
+0008b6 9f7f
+0008b7 00f0      		.DB		0b01111111, 0b10011111, 0b11110000, 0b00000000			//  ########  #########            
+0008b8 ff7f
+0008b9 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0008ba ffff
+0008bb 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+0008bc f8f1
+0008bd 0078      		.DB		0b11110001, 0b11111000, 0b01111000, 0b00000000			// ####   ######    ####           
+0008be f0e0
+0008bf 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008c0 f0e0
+0008c1 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008c2 f0e0
+0008c3 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008c4 f0e0
+0008c5 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008c6 f0e0
+0008c7 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008c8 f0e0
+0008c9 0038      		.DB		0b11100000, 0b11110000, 0b00111000, 0b00000000			// ###     ####      ###           
+0008ca f8f1
+0008cb 0078      		.DB		0b11110001, 0b11111000, 0b01111000, 0b00000000			// ####   ######    ####           
+0008cc ffff
+0008cd 00f8      		.DB		0b11111111, 0b11111111, 0b11111000, 0b00000000			// #####################           
+0008ce ff7f
+0008cf 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0008d0 9f7f
+0008d1 00f0      		.DB		0b01111111, 0b10011111, 0b11110000, 0b00000000			//  ########  #########            
+0008d2 0f3f
+0008d3 00c0      		.DB		0b00111111, 0b00001111, 0b11000000, 0b00000000			//   ######    ######              
+                 C24n8End:
+                 
+                 C24n9:
+0008d4 0100
+0008d5 00c0      		.DB		0b00000000, 0b00000001, 0b11000000, 0b00000000			//                ###              
+0008d6 c11f
+0008d7 00f0      		.DB		0b00011111, 0b11000001, 0b11110000, 0b00000000			//    #######     #####            
+0008d8 f17f
+0008d9 00f0      		.DB		0b01111111, 0b11110001, 0b11110000, 0b00000000			//  ###########   #####            
+0008da f17f
+0008db 00f8      		.DB		0b01111111, 0b11110001, 0b11111000, 0b00000000			//  ###########   ######           
+0008dc f8ff
+0008dd 00f8      		.DB		0b11111111, 0b11111000, 0b11111000, 0b00000000			// #############   #####           
+0008de 78f0
+0008df 0038      		.DB		0b11110000, 0b01111000, 0b00111000, 0b00000000			// ####     ####     ###           
+0008e0 38e0
+0008e1 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+0008e2 38e0
+0008e3 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+0008e4 38e0
+0008e5 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+0008e6 38e0
+0008e7 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+0008e8 38e0
+0008e9 0038      		.DB		0b11100000, 0b00111000, 0b00111000, 0b00000000			// ###       ###     ###           
+0008ea 30e0
+0008eb 0038      		.DB		0b11100000, 0b00110000, 0b00111000, 0b00000000			// ###       ##      ###           
+0008ec 60f0
+0008ed 0078      		.DB		0b11110000, 0b01100000, 0b01111000, 0b00000000			// ####     ##      ####           
+0008ee ffff
+0008ef 00f0      		.DB		0b11111111, 0b11111111, 0b11110000, 0b00000000			// ####################            
+0008f0 ff7f
+0008f1 00f0      		.DB		0b01111111, 0b11111111, 0b11110000, 0b00000000			//  ###################            
+0008f2 ff7f
+0008f3 00e0      		.DB		0b01111111, 0b11111111, 0b11100000, 0b00000000			//  ##################             
+0008f4 ff0f
+0008f5 0080      		.DB		0b00001111, 0b11111111, 0b10000000, 0b00000000			//     #############               
+                 C24n9End:
+                 
+                 C24LT:
+0008f6 f000
+0008f7 0000      		.DB		0b00000000, 0b11110000, 0b00000000, 0b00000000			//         ####                    
+0008f8 f000
+0008f9 0000      		.DB		0b00000000, 0b11110000, 0b00000000, 0b00000000			//         ####                    
+0008fa f801
+0008fb 0000      		.DB		0b00000001, 0b11111000, 0b00000000, 0b00000000			//        ######                   
+0008fc f801
+0008fd 0000      		.DB		0b00000001, 0b11111000, 0b00000000, 0b00000000			//        ######                   
+0008fe fc03
+0008ff 0000      		.DB		0b00000011, 0b11111100, 0b00000000, 0b00000000			//       ########                  
+000900 9c03
+000901 0000      		.DB		0b00000011, 0b10011100, 0b00000000, 0b00000000			//       ###  ###                  
+000902 9e03
+000903 0000      		.DB		0b00000011, 0b10011110, 0b00000000, 0b00000000			//       ###  ####                 
+000904 0e07
+000905 0000      		.DB		0b00000111, 0b00001110, 0b00000000, 0b00000000			//      ###    ###                 
+000906 0f07
+000907 0000      		.DB		0b00000111, 0b00001111, 0b00000000, 0b00000000			//      ###    ####                
+000908 070e
+000909 0000      		.DB		0b00001110, 0b00000111, 0b00000000, 0b00000000			//     ###      ###                
+00090a 070e
+00090b 0080      		.DB		0b00001110, 0b00000111, 0b10000000, 0b00000000			//     ###      ####               
+00090c 031c
+00090d 0080      		.DB		0b00011100, 0b00000011, 0b10000000, 0b00000000			//    ###        ###               
+00090e 031c
+00090f 00c0      		.DB		0b00011100, 0b00000011, 0b11000000, 0b00000000			//    ###        ####              
+000910 013c
+000911 00e0      		.DB		0b00111100, 0b00000001, 0b11100000, 0b00000000			//   ####         ####             
+                 C24LTEnd:
+                 
+                 C24Equals:
+000912 8e03
+000913 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000914 8e03
+000915 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000916 8e03
+000917 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000918 8e03
+000919 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00091a 8e03
+00091b 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00091c 8e03
+00091d 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00091e 8e03
+00091f 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000920 8e03
+000921 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000922 8e03
+000923 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000924 8e03
+000925 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000926 8e03
+000927 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000928 8e03
+000929 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00092a 8e03
+00092b 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00092c 8e03
+00092d 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+00092e 8e03
+00092f 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+000930 8e03
+000931 0000      		.DB		0b00000011, 0b10001110, 0b00000000, 0b00000000			//       ###   ###                 
+                 C24EqualsEnd:
+                 
+                 C24GT:
+000932 013c
+000933 00e0      		.DB		0b00111100, 0b00000001, 0b11100000, 0b00000000			//   ####         ####             
+000934 031c
+000935 00c0      		.DB		0b00011100, 0b00000011, 0b11000000, 0b00000000			//    ###        ####              
+000936 031c
+000937 0080      		.DB		0b00011100, 0b00000011, 0b10000000, 0b00000000			//    ###        ###               
+000938 070e
+000939 0080      		.DB		0b00001110, 0b00000111, 0b10000000, 0b00000000			//     ###      ####               
+00093a 070e
+00093b 0000      		.DB		0b00001110, 0b00000111, 0b00000000, 0b00000000			//     ###      ###                
+00093c 0f07
+00093d 0000      		.DB		0b00000111, 0b00001111, 0b00000000, 0b00000000			//      ###    ####                
+00093e 0e07
+00093f 0000      		.DB		0b00000111, 0b00001110, 0b00000000, 0b00000000			//      ###    ###                 
+000940 9e03
+000941 0000      		.DB		0b00000011, 0b10011110, 0b00000000, 0b00000000			//       ###  ####                 
+000942 9c03
+000943 0000      		.DB		0b00000011, 0b10011100, 0b00000000, 0b00000000			//       ###  ###                  
+000944 fc03
+000945 0000      		.DB		0b00000011, 0b11111100, 0b00000000, 0b00000000			//       ########                  
+000946 f801
+000947 0000      		.DB		0b00000001, 0b11111000, 0b00000000, 0b00000000			//        ######                   
+000948 f801
+000949 0000      		.DB		0b00000001, 0b11111000, 0b00000000, 0b00000000			//        ######                   
+00094a f000
+00094b 0000      		.DB		0b00000000, 0b11110000, 0b00000000, 0b00000000			//         ####                    
+00094c f000
+00094d 0000      		.DB		0b00000000, 0b11110000, 0b00000000, 0b00000000			//         ####                    
+                 C24GTEnd:
+                 
+                 C24Question:
+00094e 003c
+00094f 0000      		.DB		0b00111100, 0b00000000, 0b00000000, 0b00000000			//   ####                          
+000950 007c
+000951 0000      		.DB		0b01111100, 0b00000000, 0b00000000, 0b00000000			//  #####                          
+000952 00fc
+000953 0000      		.DB		0b11111100, 0b00000000, 0b00000000, 0b00000000			// ######                          
+000954 00f0
+000955 0000      		.DB		0b11110000, 0b00000000, 0b00000000, 0b00000000			// ####                            
+000956 3ce0
+000957 0078      		.DB		0b11100000, 0b00111100, 0b01111000, 0b00000000			// ###       ####   ####           
+000958 3ce0
+000959 0078      		.DB		0b11100000, 0b00111100, 0b01111000, 0b00000000			// ###       ####   ####           
+00095a 7ce0
+00095b 0078      		.DB		0b11100000, 0b01111100, 0b01111000, 0b00000000			// ###      #####   ####           
+00095c 78e0
+00095d 0078      		.DB		0b11100000, 0b01111000, 0b01111000, 0b00000000			// ###      ####    ####           
+00095e f0e0
+00095f 0000      		.DB		0b11100000, 0b11110000, 0b00000000, 0b00000000			// ###     ####                    
+000960 e0f0
+000961 0000      		.DB		0b11110000, 0b11100000, 0b00000000, 0b00000000			// ####    ###                     
+000962 e07f
+000963 0000      		.DB		0b01111111, 0b11100000, 0b00000000, 0b00000000			//  ##########                     
+000964 c07f
+000965 0000      		.DB		0b01111111, 0b11000000, 0b00000000, 0b00000000			//  #########                      
+000966 803f
+000967 0000      		.DB		0b00111111, 0b10000000, 0b00000000, 0b00000000			//   #######                       
+                 C24QuestionEnd:
+                 
+                 C24LBracket:
+000968 ffff
+000969 e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+00096a ffff
+00096b e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+00096c ffff
+00096d e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+00096e ffff
+00096f e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+000970 00e0
+000971 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+000972 00e0
+000973 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+000974 00e0
+000975 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+                 C24LBracketEnd:
+                 
+                 C24RBracket:
+000976 00e0
+000977 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+000978 00e0
+000979 e000      		.DB		0b11100000, 0b00000000, 0b00000000, 0b11100000			// ###                     ###     
+00097a ffff
+00097b e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+00097c ffff
+00097d e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+00097e ffff
+00097f e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+000980 ffff
+000981 e0ff      		.DB		0b11111111, 0b11111111, 0b11111111, 0b11100000			// ###########################     
+                 C24RBracketEnd:
+                 
+                 C24CharacterDescriptors:
+000982 0821
+000983 06be      		.DB		'!',	C24ExclEnd-C24Excl,				LOW(C24Excl),		HIGH(C24Excl)
+000984 2423
+000985 06c6      		.DB		'#',	C24HashEnd-C24Hash,				LOW(C24Hash),		HIGH(C24Hash)
+000986 3025
+000987 06ea      		.DB		'%',	C24PercentEnd-C24Percent,		LOW(C24Percent),	HIGH(C24Percent)
+000988 0e28
+000989 071a      		.DB		'(',	C24LeftParenEnd-C24LeftParen,	LOW(C24LeftParen),	HIGH(C24LeftParen)
+00098a 0e29
+00098b 0728      		.DB		')',	C24RightParenEnd-C24RightParen,	LOW(C24RightParen),	HIGH(C24RightParen)
+00098c 182a
+00098d 0736      		.DB		'*',	C24AsteriskEnd-C24Asterisk,		LOW(C24Asterisk),	HIGH(C24Asterisk)
+00098e 202b
+00098f 074e      		.DB		'+',	C24PlusEnd-C24Plus,				LOW(C24Plus),		HIGH(C24Plus)
+000990 0a2c
+000991 076e      		.DB		',',	C24CommaEnd-C24Comma,			LOW(C24Comma),		HIGH(C24Comma)
+000992 082e
+000993 0786      		.DB		'.',	C24DecimalEnd-C24Decimal,		LOW(C24Decimal),	HIGH(C24Decimal)
+000994 262f
+000995 078e      		.DB		'/',	C24SlashEnd-C24Slash,			LOW(C24Slash),		HIGH(C24Slash)
+000996 2430
+000997 07b4      		.DB		'0',	C24n0End-C24n0,					LOW(C24n0),			HIGH(C24n0)
+000998 1831
+000999 07d8      		.DB		'1',	C24n1End-C24n1,					LOW(C24n1),			HIGH(C24n1)
+00099a 2032
+00099b 07f0      		.DB		'2',	C24n2End-C24n2,					LOW(C24n2),			HIGH(C24n2)
+00099c 2233
+00099d 0810      		.DB		'3',	C24n3End-C24n3,					LOW(C24n3),			HIGH(C24n3)
+00099e 2434
+00099f 0832      		.DB		'4',	C24n4End-C24n4,					LOW(C24n4),			HIGH(C24n4)
+0009a0 2035
+0009a1 0856      		.DB		'5',	C24n5End-C24n5,					LOW(C24n5),			HIGH(C24n5)
+0009a2 2036
+0009a3 0876      		.DB		'6',	C24n6End-C24n6,					LOW(C24n6),			HIGH(C24n6)
+0009a4 1e37
+0009a5 0896      		.DB		'7',	C24n7End-C24n7,					LOW(C24n7),			HIGH(C24n7)
+0009a6 2038
+0009a7 08b4      		.DB		'8',	C24n8End-C24n8,					LOW(C24n8),			HIGH(C24n8)
+0009a8 2239
+0009a9 08d4      		.DB		'9',	C24n9End-C24n9,					LOW(C24n9),			HIGH(C24n9)
+0009aa 0e5b
+0009ab 0968      		.DB		'[',	C24LBracketEnd-C24LBracket,		LOW(C24LBracket),	HIGH(C24LBracket)
+0009ac 0c5d
+0009ad 0976      		.DB		']',	C24RBracketEnd-C24RBracket,		LOW(C24RBracket),	HIGH(C24RBracket)
+0009ae 0000      		.DW		0		;End of table on instruction boundary
+                 
+                 C24CharacterSet:
+0009af 0982      		.DW		C24CharacterDescriptors					; Pointer to descriptors
+0009b0 081b      		.DB		27, 8									; Character Height, bits,  Bit width of undefined char, typically space
+                 
+                 
+                 
+                 			.INCLUDE "LCDAGM1264F.asm"		; Driver for AGM1264F 128x64 LCD display
+                 
+                 
+                 LCDClear:
+                 
+0009b1 9508      			RET
+                 
+                 
+                 			.DSEG
+                 DataEnd:
+                 
+                 
+                 
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+ATmega8535 register use summary:
+r0 :  21 r1 :  18 r2 :  16 r3 :   9 r4 :   5 r5 :   7 r6 :   5 r7 :   2 
+r8 :   2 r9 :   9 r10:   6 r11:   7 r12:   5 r13:  40 r14:  40 r15:  47 
+r16: 268 r17: 121 r18:  62 r19:  51 r20:  71 r21:  32 r22:  14 r23:  12 
+r24:  13 r25:  85 r26:  20 r27:  20 r28:  33 r29:  31 r30:  92 r31:  97 
+x  :   2 y  :  24 z  :  53 
+Registers used: 35 out of 35 (100.0%)
+
+ATmega8535 instruction use summary:
+.lds  :   0 .sts  :   0 adc   :  24 add   :  17 adiw  :  15 and   :   3 
+andi  :   6 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   6 brcs  :   3 breq  :  30 brge  :   5 brhc  :   0 brhs  :   0 
+brid  :   0 brie  :   0 brlo  :  16 brlt  :   2 brmi  :   9 brne  :  31 
+brpl  :   7 brsh  :   0 brtc  :   8 brts  :   0 brvc  :   2 brvs  :   5 
+bset  :   0 bst   :   5 call  :   4 cbi   :   1 cbr   :   0 clc   :   1 
+clh   :   0 cli   :   0 cln   :   0 clr   :  33 cls   :   0 clt   :   0 
+clv   :   0 clz   :   0 com   :   5 cp    :   7 cpc   :   8 cpi   :  20 
+cpse  :   0 dec   :  28 eicall:   1 eijmp :   1 elpm  :   2 eor   :   9 
+fmul  :   0 fmuls :   0 fmulsu:   0 icall :   0 ijmp  :   3 in    :   8 
+inc   :  23 jmp   :   1 ld    :  22 ldd   :  10 ldi   : 236 lds   :  38 
+lpm   :   8 lsl   :  30 lsr   :  22 mov   : 109 movw  :   0 mul   :   5 
+muls  :   0 mulsu :   0 neg   :   2 nop   :   0 or    :   6 ori   :   5 
+out   :  17 pop   :  31 push  :  29 rcall : 163 ret   :  64 reti  :  20 
+rjmp  :  74 rol   :  32 ror   :  22 sbc   :  12 sbci  :   2 sbi   :   3 
+sbic  :   2 sbis  :   3 sbiw  :   5 sbr   :   0 sbrc  :   0 sbrs  :   3 
+sec   :   3 seh   :   0 sei   :   1 sen   :   0 ser   :   0 ses   :   0 
+set   :   0 sev   :   0 sez   :   0 sleep :   1 spm   :   0 st    :  25 
+std   :  10 sts   :  34 sub   :  48 subi  :   7 swap  :   0 tst   :  30 
+wdr   :   0 
+Instructions used: 72 out of 115 (62.6%)
+
+ATmega8535 memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x001364   3100   1860   4960   16384  30.3%
+[.dseg] 0x000060 0x000126      0    198    198     512  38.7%
+[.eseg] 0x000000 0x000033      0     51     51     512  10.0%
+
+Assembly complete, 0 errors, 0 warnings
